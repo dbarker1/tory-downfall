@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tory tracker</title>
+    <style>
+        body {
+            background-color: #efefef;
+        }
+        * {
+            margin: 0px;
+            font-family: sans-serif;
+
+            h1 {
+                text-align: center;
+                position: fixed;
+                background-color: white;
+                width: 100%;
+                z-index: 999;
+                padding: 10px 0px;
+                border-bottom: solid 2px black;
+            }
+        }
+
+        #root {
+            display: flex;
+
+            .tories {
+                user-select: none;
+
+                .tory {
+                    background-color: white;
+                    border-radius: 10px;
+                    h2 {
+                        font-size: 13pt;
+
+                    }
+
+                    h4 {
+                        font-size: 10pt;
+                    }
+
+                    p {
+                        margin-top: 12px;
+                        font-style: italic;
+                    }
+
+                    position: absolute;
+                    width: 200px !important;
+                    border: solid 1px lightgrey;
+                    padding: 10px;
+                    height: 80px;
+                    user-select: none;
+                }
+
+                .tory:hover {
+                    cursor: pointer;
+                }
+
+                .labourised {
+                    background-color: red;
+                    color: white !important;
+                }
+
+                position: relative;
+                width: calc(100vw - 80px);
+                overflow-x: scroll;
+            }
+
+            .scale {
+                background-color: lightblue;
+                height: 7500px;
+
+                .scale-entry {
+                    position: absolute;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🥀 Tory downfall tracker 🥀</h1>
+    <div id="root">
+
+    </div>
+    <script>
+
+        var data = [
+            {
+                'Constituency': 'Bury North', 'MP': 'James Daly', 'Winning party': 'Con', 'Electorate': '68802', 'Valid votes': '46841', 'Majority': '105', 'Majority (%)': 0.224162593, 'Con': '21660', 'Lab': '21555', 'LD': '1584'
+            },
+            {
+                'Constituency': 'Kensington', 'MP': 'Felicity Buchan', 'Winning party': 'Con', 'Electorate': '64609', 'Valid votes': '43762', 'Majority': '150', 'Majority (%)': 0.342763128, 'Con': '16768', 'Lab': '16618', 'LD': '9312'
+            },
+            {
+                'Constituency': 'Bury South', 'MP': 'Christian Wakeford', 'Winning party': 'Con', 'Electorate': '75152', 'Valid votes': '50274', 'Majority': '402', 'Majority (%)': 0.799618093, 'Con': '22034', 'Lab': '21632', 'LD': '2315'
+            },
+            {
+                'Constituency': 'Bolton North East', 'MP': 'Mark Logan', 'Winning party': 'Con', 'Electorate': '67564', 'Valid votes': '43556', 'Majority': '378', 'Majority (%)': 0.867848287, 'Con': '19759', 'Lab': '19381', 'LD': '1847'
+            },
+            {
+                'Constituency': 'Moray', 'MP': 'Douglas Ross', 'Winning party': 'Con', 'Electorate': '71035', 'Valid votes': '48825', 'Majority': '513', 'Majority (%)': 1.050691244, 'Con': '22112', 'Lab': '2432', 'LD': '2269'
+            },
+            {
+                'Constituency': 'High Peak', 'MP': 'Robert Largan', 'Winning party': 'Con', 'Electorate': '74265', 'Valid votes': '54173', 'Majority': '590', 'Majority (%)': 1.089103428, 'Con': '24844', 'Lab': '24254', 'LD': '2750'
+            },
+            {
+                'Constituency': 'Wimbledon', 'MP': 'Stephen Hammond', 'Winning party': 'Con', 'Electorate': '68240', 'Valid votes': '53027', 'Majority': '628', 'Majority (%)': 1.184302337, 'Con': '20373', 'Lab': '12543', 'LD': '19745'
+            },
+            {
+                'Constituency': 'Carshalton and Wallington', 'MP': 'Elliot Colburn', 'Winning party': 'Con', 'Electorate': '72941', 'Valid votes': '49098', 'Majority': '629', 'Majority (%)': 1.281111247, 'Con': '20822', 'Lab': '6081', 'LD': '20193'
+            },
+            {
+                'Constituency': 'Gedling', 'MP': 'Tom Randall', 'Winning party': 'Con', 'Electorate': '71336', 'Valid votes': '49953', 'Majority': '679', 'Majority (%)': 1.359277721, 'Con': '22718', 'Lab': '22039', 'LD': '2279'
+            },
+            {
+                'Constituency': 'Heywood and Middleton', 'MP': 'Chris Clarkson', 'Winning party': 'Con', 'Electorate': '80162', 'Valid votes': '47488', 'Majority': '663', 'Majority (%)': 1.396142183, 'Con': '20453', 'Lab': '19790', 'LD': '2073'
+            },
+            {
+                'Constituency': 'West Aberdeenshire and Kincardine', 'MP': 'Andrew Bowie', 'Winning party': 'Con', 'Electorate': '72640', 'Valid votes': '53345', 'Majority': '843', 'Majority (%)': 1.580279314, 'Con': '22752', 'Lab': '2431', 'LD': '6253'
+            },
+            {
+                'Constituency': 'Cheltenham', 'MP': 'Alex Chalk', 'Winning party': 'Con', 'Electorate': '81044', 'Valid votes': '59357', 'Majority': '981', 'Majority (%)': 1.652711559, 'Con': '28486', 'Lab': '2921', 'LD': '27505'
+            },
+            {
+                'Constituency': 'Winchester', 'MP': 'Stephen Brine', 'Winning party': 'Con', 'Electorate': '75582', 'Valid votes': '58890', 'Majority': '985', 'Majority (%)': 1.672609951, 'Con': '28430', 'Lab': '2723', 'LD': '27445'
+            },
+            {
+                'Constituency': 'Blyth Valley', 'MP': 'Ian Levy', 'Winning party': 'Con', 'Electorate': '64429', 'Valid votes': '40859', 'Majority': '712', 'Majority (%)': 1.742578135, 'Con': '17440', 'Lab': '16728', 'LD': '2151'
+            },
+            {
+                'Constituency': 'Stoke-On-Trent Central', 'MP': 'Jo Gideon', 'Winning party': 'Con', 'Electorate': '55419', 'Valid votes': '32070', 'Majority': '670', 'Majority (%)': 2.089179919, 'Con': '14557', 'Lab': '13887', 'LD': '1116'
+            },
+            {
+                'Constituency': 'Chipping Barnet', 'MP': 'Theresa Villiers', 'Winning party': 'Con', 'Electorate': '79960', 'Valid votes': '57569', 'Majority': '1212', 'Majority (%)': 2.105299727, 'Con': '25745', 'Lab': '24533', 'LD': '5932'
+            },
+            {
+                'Constituency': 'Delyn', 'MP': 'Rob Roberts', 'Winning party': 'Con', 'Electorate': '54560', 'Valid votes': '38370', 'Majority': '865', 'Majority (%)': 2.25436539, 'Con': '16756', 'Lab': '15891', 'LD': '2346'
+            },
+            {
+                'Constituency': 'North West Durham', 'MP': 'Richard Holden', 'Winning party': 'Con', 'Electorate': '72166', 'Valid votes': '47663', 'Majority': '1144', 'Majority (%)': 2.40018463, 'Con': '19990', 'Lab': '18846', 'LD': '2831'
+            },
+            {
+                'Constituency': 'Chingford and Woodford Green', 'MP': 'Iain Duncan Smith', 'Winning party': 'Con', 'Electorate': '65393', 'Valid votes': '48444', 'Majority': '1262', 'Majority (%)': 2.605069771, 'Con': '23481', 'Lab': '22219', 'LD': '2744'
+            },
+            {
+                'Constituency': 'Bridgend', 'MP': 'Jamie Wallis', 'Winning party': 'Con', 'Electorate': '63303', 'Valid votes': '42236', 'Majority': '1157', 'Majority (%)': 2.739369258, 'Con': '18193', 'Lab': '17036', 'LD': '2368'
+            },
+            {
+                'Constituency': 'Dewsbury', 'MP': 'Mark Eastwood', 'Winning party': 'Con', 'Electorate': '81253', 'Valid votes': '56389', 'Majority': '1561', 'Majority (%)': 2.768270407, 'Con': '26179', 'Lab': '24618', 'LD': '2406'
+            },
+            {
+                'Constituency': 'Warrington South', 'MP': 'Andy Carter', 'Winning party': 'Con', 'Electorate': '86015', 'Valid votes': '61899', 'Majority': '2010', 'Majority (%)': 3.247225319, 'Con': '28187', 'Lab': '26177', 'LD': '5732'
+            },
+            {
+                'Constituency': 'Clwyd South', 'MP': 'Simon Baynes', 'Winning party': 'Con', 'Electorate': '53919', 'Valid votes': '36306', 'Majority': '1239', 'Majority (%)': 3.412659065, 'Con': '16222', 'Lab': '14983', 'LD': '1496'
+            },
+            {
+                'Constituency': 'Burnley', 'MP': 'Antony Higginbotham', 'Winning party': 'Con', 'Electorate': '64345', 'Valid votes': '38984', 'Majority': '1352', 'Majority (%)': 3.468089473, 'Con': '15720', 'Lab': '14368', 'LD': '3501'
+            },
+            {
+                'Constituency': 'Dumfries and Galloway', 'MP': 'Alister Jack', 'Winning party': 'Con', 'Electorate': '74580', 'Valid votes': '51429', 'Majority': '1805', 'Majority (%)': 3.509692975, 'Con': '22678', 'Lab': '4745', 'LD': '3133'
+            },
+            {
+                'Constituency': 'Birmingham, Northfield', 'MP': 'Gary Sambrook', 'Winning party': 'Con', 'Electorate': '73694', 'Valid votes': '43098', 'Majority': '1640', 'Majority (%)': 3.805280988, 'Con': '19957', 'Lab': '18317', 'LD': '1961'
+            },
+            {
+                'Constituency': 'Wolverhampton South West', 'MP': 'Stuart Anderson', 'Winning party': 'Con', 'Electorate': '60534', 'Valid votes': '41136', 'Majority': '1661', 'Majority (%)': 4.037825749, 'Con': '19864', 'Lab': '18203', 'LD': '2041'
+            },
+            {
+                'Constituency': 'Cheadle', 'MP': 'Mary Robinson', 'Winning party': 'Con', 'Electorate': '74577', 'Valid votes': '55903', 'Majority': '2336', 'Majority (%)': 4.178666619, 'Con': '25694', 'Lab': '6851', 'LD': '23358'
+            },
+            {
+                'Constituency': 'Leigh', 'MP': 'James Grundy', 'Winning party': 'Con', 'Electorate': '77417', 'Valid votes': '46979', 'Majority': '1965', 'Majority (%)': 4.182719939, 'Con': '21266', 'Lab': '19301', 'LD': '2252'
+            },
+            {
+                'Constituency': 'Keighley', 'MP': 'Robbie Moore', 'Winning party': 'Con', 'Electorate': '72778', 'Valid votes': '52600', 'Majority': '2218', 'Majority (%)': 4.216730038, 'Con': '25298', 'Lab': '23080', 'LD': '2573'
+            },
+            {
+                'Constituency': 'South Cambridgeshire', 'MP': 'Anthony Browne', 'Winning party': 'Con', 'Electorate': '87288', 'Valid votes': '66929', 'Majority': '2904', 'Majority (%)': 4.338926325, 'Con': '31015', 'Lab': '7803', 'LD': '28111'
+            },
+            {
+                'Constituency': 'Esher and Walton', 'MP': 'Dominic Raab', 'Winning party': 'Con', 'Electorate': '81184', 'Valid votes': '63084', 'Majority': '2743', 'Majority (%)': 4.348170693, 'Con': '31132', 'Lab': '2838', 'LD': '28389'
+            },
+            {
+                'Constituency': 'West Bromwich East', 'MP': 'Nicola Richards', 'Winning party': 'Con', 'Electorate': '62046', 'Valid votes': '35975', 'Majority': '1593', 'Majority (%)': 4.428075052, 'Con': '16804', 'Lab': '15211', 'LD': '1313'
+            },
+            {
+                'Constituency': 'Lewes', 'MP': 'Maria Caulfield', 'Winning party': 'Con', 'Electorate': '71503', 'Valid votes': '54851', 'Majority': '2457', 'Majority (%)': 4.47940785, 'Con': '26268', 'Lab': '3206', 'LD': '23811'
+            },
+            {
+                'Constituency': 'Vale Of Clwyd', 'MP': 'James Davies', 'Winning party': 'Con', 'Electorate': '56649', 'Valid votes': '37213', 'Majority': '1827', 'Majority (%)': 4.909574611, 'Con': '17270', 'Lab': '15443', 'LD': '1471'
+            },
+            {
+                'Constituency': 'Ynys M�n', 'MP': 'Virginia Crosbie', 'Winning party': 'Con', 'Electorate': '51925', 'Valid votes': '36552', 'Majority': '1968', 'Majority (%)': 5.384110309, 'Con': '12959', 'Lab': '10991', 'LD': '0'
+            },
+            {
+                'Constituency': 'Peterborough', 'MP': 'Paul Bristow', 'Winning party': 'Con', 'Electorate': '72560', 'Valid votes': '47801', 'Majority': '2580', 'Majority (%)': 5.397376624, 'Con': '22334', 'Lab': '19754', 'LD': '2334'
+            },
+            {
+                'Constituency': 'Derby North', 'MP': 'Amanda Solloway', 'Winning party': 'Con', 'Electorate': '73199', 'Valid votes': '47017', 'Majority': '2540', 'Majority (%)': 5.402301295, 'Con': '21259', 'Lab': '18719', 'LD': '3450'
+            },
+            {
+                'Constituency': 'Guildford', 'MP': 'Angela Richardson', 'Winning party': 'Con', 'Electorate': '77729', 'Valid votes': '58651', 'Majority': '3337', 'Majority (%)': 5.68958756, 'Con': '26317', 'Lab': '4515', 'LD': '22980'
+            },
+            {
+                'Constituency': 'Stroud', 'MP': 'Siobhan Baillie', 'Winning party': 'Con', 'Electorate': '84537', 'Valid votes': '65930', 'Majority': '3840', 'Majority (%)': 5.824359169, 'Con': '31582', 'Lab': '27742', 'LD': '0'
+            },
+            {
+                'Constituency': 'Wrexham', 'MP': 'Sarah Atherton', 'Winning party': 'Con', 'Electorate': '49737', 'Valid votes': '33532', 'Majority': '2131', 'Majority (%)': 6.355123464, 'Con': '15199', 'Lab': '13068', 'LD': '1447'
+            },
+            {
+                'Constituency': 'Aberconwy', 'MP': 'Robin Millar', 'Winning party': 'Con', 'Electorate': '44699', 'Valid votes': '31865', 'Majority': '2034', 'Majority (%)': 6.383179037, 'Con': '14687', 'Lab': '12653', 'LD': '1821'
+            },
+            {
+                'Constituency': 'Pudsey', 'MP': 'Stuart Andrew', 'Winning party': 'Con', 'Electorate': '73212', 'Valid votes': '54215', 'Majority': '3517', 'Majority (%)': 6.487134557, 'Con': '26453', 'Lab': '22936', 'LD': '3088'
+            },
+            {
+                'Constituency': 'Vale Of Glamorgan', 'MP': 'Alun Cairns', 'Winning party': 'Con', 'Electorate': '76508', 'Valid votes': '54807', 'Majority': '3562', 'Majority (%)': 6.499169814, 'Con': '27305', 'Lab': '23743', 'LD': '0'
+            },
+            {
+                'Constituency': 'Lincoln', 'MP': 'Karl McCartney', 'Winning party': 'Con', 'Electorate': '74942', 'Valid votes': '50629', 'Majority': '3514', 'Majority (%)': 6.940686168, 'Con': '24267', 'Lab': '20753', 'LD': '2422'
+            },
+            {
+                'Constituency': 'Hyndburn', 'MP': 'Sara Britcliffe', 'Winning party': 'Con', 'Electorate': '70842', 'Valid votes': '42406', 'Majority': '2951', 'Majority (%)': 6.958920907, 'Con': '20565', 'Lab': '17614', 'LD': '1226'
+            },
+            {
+                'Constituency': 'Hastings and Rye', 'MP': 'Sally-Ann Hart', 'Winning party': 'Con', 'Electorate': '80524', 'Valid votes': '54274', 'Majority': '4043', 'Majority (%)': 7.449239046, 'Con': '26896', 'Lab': '22853', 'LD': '3960'
+            },
+            {
+                'Constituency': 'Wakefield', 'MP': 'Imran Ahmad Khan', 'Winning party': 'Con', 'Electorate': '70192', 'Valid votes': '45027', 'Majority': '3358', 'Majority (%)': 7.457747574, 'Con': '21283', 'Lab': '17925', 'LD': '1772'
+            },
+            {
+                'Constituency': 'Darlington', 'MP': 'Peter Gibson', 'Winning party': 'Con', 'Electorate': '66397', 'Valid votes': '43498', 'Majority': '3294', 'Majority (%)': 7.572761966, 'Con': '20901', 'Lab': '17607', 'LD': '2097'
+            },
+            {
+                'Constituency': 'Watford', 'MP': 'Dean Russell', 'Winning party': 'Con', 'Electorate': '83359', 'Valid votes': '58065', 'Majority': '4433', 'Majority (%)': 7.63454749, 'Con': '26421', 'Lab': '21988', 'LD': '9323'
+            },
+            {
+                'Constituency': 'Hendon', 'MP': 'Matthew Offord', 'Winning party': 'Con', 'Electorate': '82661', 'Valid votes': '55075', 'Majority': '4230', 'Majority (%)': 7.680435769, 'Con': '26878', 'Lab': '22648', 'LD': '4628'
+            },
+            {
+                'Constituency': 'Dumfriesshire, Clydesdale and Tweeddale', 'MP': 'David Mundell', 'Winning party': 'Con', 'Electorate': '68330', 'Valid votes': '49153', 'Majority': '3781', 'Majority (%)': 7.692307692, 'Con': '22611', 'Lab': '4172', 'LD': '3540'
+            },
+            {
+                'Constituency': 'Wycombe', 'MP': 'Steve Baker', 'Winning party': 'Con', 'Electorate': '78093', 'Valid votes': '54756', 'Majority': '4214', 'Majority (%)': 7.69596026, 'Con': '24766', 'Lab': '20552', 'LD': '6543'
+            },
+            {
+                'Constituency': 'Truro and Falmouth', 'MP': 'Cherilyn Mackrory', 'Winning party': 'Con', 'Electorate': '76719', 'Valid votes': '59190', 'Majority': '4561', 'Majority (%)': 7.705693529, 'Con': '27237', 'Lab': '22676', 'LD': '7150'
+            },
+            {
+                'Constituency': 'Eastbourne', 'MP': 'Caroline Ansell', 'Winning party': 'Con', 'Electorate': '79307', 'Valid votes': '55134', 'Majority': '4331', 'Majority (%)': 7.855406827, 'Con': '26951', 'Lab': '3848', 'LD': '22620'
+            },
+            {
+                'Constituency': 'Don Valley', 'MP': 'Nick Fletcher', 'Winning party': 'Con', 'Electorate': '75356', 'Valid votes': '45437', 'Majority': '3630', 'Majority (%)': 7.989083786, 'Con': '19609', 'Lab': '15979', 'LD': '1907'
+            },
+            {
+                'Constituency': 'Reading West', 'MP': 'Alok Sharma', 'Winning party': 'Con', 'Electorate': '74137', 'Valid votes': '50392', 'Majority': '4117', 'Majority (%)': 8.169947611, 'Con': '24393', 'Lab': '20276', 'LD': '4460'
+            },
+            {
+                'Constituency': 'St Ives', 'MP': 'Derek Thomas', 'Winning party': 'Con', 'Electorate': '68795', 'Valid votes': '51413', 'Majority': '4280', 'Majority (%)': 8.324742769, 'Con': '25365', 'Lab': '3553', 'LD': '21085'
+            },
+            {
+                'Constituency': 'Colne Valley', 'MP': 'Jason McCartney', 'Winning party': 'Con', 'Electorate': '84174', 'Valid votes': '60892', 'Majority': '5103', 'Majority (%)': 8.38041122, 'Con': '29482', 'Lab': '24379', 'LD': '3815'
+            },
+            {
+                'Constituency': 'Southport', 'MP': 'Damien Moore', 'Winning party': 'Con', 'Electorate': '70837', 'Valid votes': '48180', 'Majority': '4147', 'Majority (%)': 8.607305936, 'Con': '22914', 'Lab': '18767', 'LD': '6499'
+            },
+            {
+                'Constituency': 'Redcar', 'MP': 'Jacob Young', 'Winning party': 'Con', 'Electorate': '65864', 'Valid votes': '40842', 'Majority': '3527', 'Majority (%)': 8.635718133, 'Con': '18811', 'Lab': '15284', 'LD': '2018'
+            },
+            {
+                'Constituency': 'Cities Of London and Westminster', 'MP': 'Nickie Aiken', 'Winning party': 'Con', 'Electorate': '63700', 'Valid votes': '42723', 'Majority': '3953', 'Majority (%)': 9.25262739, 'Con': '17049', 'Lab': '11624', 'LD': '13096'
+            },
+            {
+                'Constituency': 'Southampton, Itchen', 'MP': 'Royston Smith', 'Winning party': 'Con', 'Electorate': '72299', 'Valid votes': '47421', 'Majority': '4498', 'Majority (%)': 9.485249151, 'Con': '23952', 'Lab': '19454', 'LD': '2503'
+            },
+            {
+                'Constituency': 'Stockton South', 'MP': 'Matt Vickers', 'Winning party': 'Con', 'Electorate': '76870', 'Valid votes': '54802', 'Majority': '5260', 'Majority (%)': 9.598189847, 'Con': '27764', 'Lab': '22504', 'LD': '2338'
+            },
+            {
+                'Constituency': 'Broxtowe', 'MP': 'Darren Henry', 'Winning party': 'Con', 'Electorate': '73052', 'Valid votes': '55272', 'Majority': '5331', 'Majority (%)': 9.645028224, 'Con': '26602', 'Lab': '21271', 'LD': '0'
+            },
+            {
+                'Constituency': 'Berwickshire, Roxburgh and Selkirk', 'MP': 'John Lamont', 'Winning party': 'Con', 'Electorate': '74518', 'Valid votes': '53146', 'Majority': '5148', 'Majority (%)': 9.686523915, 'Con': '25747', 'Lab': '2513', 'LD': '4287'
+            },
+            {
+                'Constituency': 'Banff and Buchan', 'MP': 'David Duguid', 'Winning party': 'Con', 'Electorate': '66655', 'Valid votes': '42260', 'Majority': '4118', 'Majority (%)': 9.744439186, 'Con': '21182', 'Lab': '1734', 'LD': '2280'
+            },
+            {
+                'Constituency': 'Calder Valley', 'MP': 'Craig Whittaker', 'Winning party': 'Con', 'Electorate': '79287', 'Valid votes': '57793', 'Majority': '5774', 'Majority (%)': 9.990829339, 'Con': '29981', 'Lab': '24207', 'LD': '2884'
+            },
+            {
+                'Constituency': 'Hazel Grove', 'MP': 'William Wragg', 'Winning party': 'Con', 'Electorate': '63346', 'Valid votes': '44269', 'Majority': '4423', 'Majority (%)': 9.991190223, 'Con': '21592', 'Lab': '5508', 'LD': '17169'
+            },
+            {
+                'Constituency': 'Milton Keynes North', 'MP': 'Ben Everitt', 'Winning party': 'Con', 'Electorate': '91545', 'Valid votes': '62543', 'Majority': '6255', 'Majority (%)': 10.00111923, 'Con': '30938', 'Lab': '24683', 'LD': '4991'
+            },
+            {
+                'Constituency': 'Workington', 'MP': 'Mark Jenkinson', 'Winning party': 'Con', 'Electorate': '61370', 'Valid votes': '41599', 'Majority': '4176', 'Majority (%)': 10.03870285, 'Con': '20488', 'Lab': '16312', 'LD': '1525'
+            },
+            {
+                'Constituency': 'Norwich North', 'MP': 'Chloe Smith', 'Winning party': 'Con', 'Electorate': '67172', 'Valid votes': '46285', 'Majority': '4738', 'Majority (%)': 10.23657772, 'Con': '23397', 'Lab': '18659', 'LD': '2663'
+            },
+            {
+                'Constituency': 'East Devon', 'MP': 'Simon Jupp', 'Winning party': 'Con', 'Electorate': '87168', 'Valid votes': '64073', 'Majority': '6708', 'Majority (%)': 10.46930845, 'Con': '32577', 'Lab': '2870', 'LD': '1771'
+            },
+            {
+                'Constituency': 'Filton and Bradley Stoke', 'MP': 'Jack Lopresti', 'Winning party': 'Con', 'Electorate': '74016', 'Valid votes': '53752', 'Majority': '5646', 'Majority (%)': 10.50379521, 'Con': '26293', 'Lab': '20647', 'LD': '4992'
+            },
+            {
+                'Constituency': 'Milton Keynes South', 'MP': 'Iain Stewart', 'Winning party': 'Con', 'Electorate': '96363', 'Valid votes': '64007', 'Majority': '6944', 'Majority (%)': 10.84881341, 'Con': '32011', 'Lab': '25067', 'LD': '4688'
+            },
+            {
+                'Constituency': 'Sedgefield', 'MP': 'Paul Howell', 'Winning party': 'Con', 'Electorate': '64325', 'Valid votes': '41566', 'Majority': '4513', 'Majority (%)': 10.85743155, 'Con': '19609', 'Lab': '15096', 'LD': '1955'
+            },
+            {
+                'Constituency': 'West Bromwich West', 'MP': 'Shaun Bailey', 'Winning party': 'Con', 'Electorate': '64517', 'Valid votes': '34459', 'Majority': '3799', 'Majority (%)': 11.02469602, 'Con': '17419', 'Lab': '13620', 'LD': '915'
+            },
+            {
+                'Constituency': 'Ipswich', 'MP': 'Tom Hunt', 'Winning party': 'Con', 'Electorate': '75525', 'Valid votes': '49579', 'Majority': '5479', 'Majority (%)': 11.05104984, 'Con': '24952', 'Lab': '19473', 'LD': '2439'
+            },
+            {
+                'Constituency': 'Altrincham and Sale West', 'MP': 'Graham Brady', 'Winning party': 'Con', 'Electorate': '73107', 'Valid votes': '54763', 'Majority': '6139', 'Majority (%)': 11.21012362, 'Con': '26311', 'Lab': '20172', 'LD': '6036'
+            },
+            {
+                'Constituency': 'Blackpool South', 'MP': 'Scott Benton', 'Winning party': 'Con', 'Electorate': '57690', 'Valid votes': '32752', 'Majority': '3690', 'Majority (%)': 11.26648754, 'Con': '16247', 'Lab': '12557', 'LD': '1008'
+            },
+            {
+                'Constituency': 'Northampton South', 'MP': 'Andrew Lewer', 'Winning party': 'Con', 'Electorate': '62163', 'Valid votes': '40835', 'Majority': '4697', 'Majority (%)': 11.50238766, 'Con': '20914', 'Lab': '16217', 'LD': '2482'
+            },
+            {
+                'Constituency': 'Bolsover', 'MP': 'Mark Fletcher', 'Winning party': 'Con', 'Electorate': '74292', 'Valid votes': '45938', 'Majority': '5299', 'Majority (%)': 11.53511254, 'Con': '21791', 'Lab': '16492', 'LD': '1759'
+            },
+            {
+                'Constituency': 'Shipley', 'MP': 'Philip Davies', 'Winning party': 'Con', 'Electorate': '74029', 'Valid votes': '54004', 'Majority': '6242', 'Majority (%)': 11.55840308, 'Con': '27437', 'Lab': '21195', 'LD': '3188'
+            },
+            {
+                'Constituency': 'Ashfield', 'MP': 'Lee Anderson', 'Winning party': 'Con', 'Electorate': '78204', 'Valid votes': '48980', 'Majority': '5733', 'Majority (%)': 11.70477746, 'Con': '19231', 'Lab': '11971', 'LD': '1105'
+            },
+            {
+                'Constituency': 'Hitchin and Harpenden', 'MP': 'Bim Afolami', 'Winning party': 'Con', 'Electorate': '76323', 'Valid votes': '58871', 'Majority': '6895', 'Majority (%)': 11.71204838, 'Con': '27719', 'Lab': '9959', 'LD': '20824'
+            },
+            {
+                'Constituency': 'Wolverhampton North East', 'MP': 'Jane Stevenson', 'Winning party': 'Con', 'Electorate': '61660', 'Valid votes': '34281', 'Majority': '4080', 'Majority (%)': 11.90163648, 'Con': '17722', 'Lab': '13642', 'LD': '960'
+            },
+            {
+                'Constituency': 'Finchley and Golders Green', 'MP': 'Mike Freer', 'Winning party': 'Con', 'Electorate': '77573', 'Valid votes': '55109', 'Majority': '6562', 'Majority (%)': 11.90731097, 'Con': '24162', 'Lab': '13347', 'LD': '17600'
+            },
+            {
+                'Constituency': 'Wokingham', 'MP': 'John Redwood', 'Winning party': 'Con', 'Electorate': '83953', 'Valid votes': '61997', 'Majority': '7383', 'Majority (%)': 11.90864074, 'Con': '30734', 'Lab': '6450', 'LD': '23351'
+            },
+            {
+                'Constituency': 'Preseli Pembrokeshire', 'MP': 'Stephen Crabb', 'Winning party': 'Con', 'Electorate': '59606', 'Valid votes': '42419', 'Majority': '5062', 'Majority (%)': 11.93333176, 'Con': '21381', 'Lab': '16319', 'LD': '1943'
+            },
+            {
+                'Constituency': 'Barrow and Furness', 'MP': 'Simon Fell', 'Winning party': 'Con', 'Electorate': '70158', 'Valid votes': '46046', 'Majority': '5789', 'Majority (%)': 12.5722104, 'Con': '23876', 'Lab': '18087', 'LD': '2025'
+            },
+            {
+                'Constituency': 'Rushcliffe', 'MP': 'Ruth Edwards', 'Winning party': 'Con', 'Electorate': '77047', 'Valid votes': '60505', 'Majority': '7643', 'Majority (%)': 12.63201388, 'Con': '28765', 'Lab': '21122', 'LD': '9600'
+            },
+            {
+                'Constituency': 'Rother Valley', 'MP': 'Alexander Stafford', 'Winning party': 'Con', 'Electorate': '74804', 'Valid votes': '48698', 'Majority': '6318', 'Majority (%)': 12.97383876, 'Con': '21970', 'Lab': '15652', 'LD': '2553'
+            },
+            {
+                'Constituency': 'South Swindon', 'MP': 'Robert Buckland', 'Winning party': 'Con', 'Electorate': '73118', 'Valid votes': '50746', 'Majority': '6625', 'Majority (%)': 13.05521617, 'Con': '26536', 'Lab': '19911', 'LD': '4299'
+            },
+            {
+                'Constituency': 'Loughborough', 'MP': 'Jane Hunt', 'Winning party': 'Con', 'Electorate': '79764', 'Valid votes': '54631', 'Majority': '7169', 'Majority (%)': 13.12258608, 'Con': '27954', 'Lab': '20785', 'LD': '4153'
+            },
+            {
+                'Constituency': 'Worcester', 'MP': 'Robin Walker', 'Winning party': 'Con', 'Electorate': '73485', 'Valid votes': '50898', 'Majority': '6758', 'Majority (%)': 13.27753546, 'Con': '25856', 'Lab': '19098', 'LD': '3666'
+            },
+            {
+                'Constituency': 'Copeland', 'MP': 'Trudy Harrison', 'Winning party': 'Con', 'Electorate': '61693', 'Valid votes': '42523', 'Majority': '5842', 'Majority (%)': 13.73844743, 'Con': '22856', 'Lab': '17014', 'LD': '1888'
+            },
+            {
+                'Constituency': 'Pendle', 'MP': 'Andrew Stephenson', 'Winning party': 'Con', 'Electorate': '65292', 'Valid votes': '44460', 'Majority': '6186', 'Majority (%)': 13.91363023, 'Con': '24076', 'Lab': '17890', 'LD': '1548'
+            },
+            {
+                'Constituency': 'Northampton North', 'MP': 'Michael Ellis', 'Winning party': 'Con', 'Electorate': '58768', 'Valid votes': '39539', 'Majority': '5507', 'Majority (%)': 13.92802044, 'Con': '21031', 'Lab': '15524', 'LD': '2031'
+            },
+            {
+                'Constituency': 'Morecambe and Lunesdale', 'MP': 'David Morris', 'Winning party': 'Con', 'Electorate': '67397', 'Valid votes': '45310', 'Majority': '6354', 'Majority (%)': 14.02339439, 'Con': '23925', 'Lab': '17571', 'LD': '2328'
+            },
+            {
+                'Constituency': 'East Worthing and Shoreham', 'MP': 'Tim Loughton', 'Winning party': 'Con', 'Electorate': '75194', 'Valid votes': '53128', 'Majority': '7474', 'Majority (%)': 14.06791146, 'Con': '27107', 'Lab': '19633', 'LD': '4127'
+            },
+            {
+                'Constituency': 'Penistone and Stocksbridge', 'MP': 'Miriam Cates', 'Winning party': 'Con', 'Electorate': '70925', 'Valid votes': '49520', 'Majority': '7210', 'Majority (%)': 14.55977383, 'Con': '23688', 'Lab': '16478', 'LD': '5054'
+            },
+            {
+                'Constituency': 'South West Surrey', 'MP': 'Jeremy Hunt', 'Winning party': 'Con', 'Electorate': '79096', 'Valid votes': '60340', 'Majority': '8817', 'Majority (%)': 14.61219755, 'Con': '32191', 'Lab': '4775', 'LD': '23374'
+            },
+            {
+                'Constituency': 'Uxbridge and South Ruislip', 'MP': 'Boris Johnson', 'Winning party': 'Con', 'Electorate': '70365', 'Valid votes': '48187', 'Majority': '7210', 'Majority (%)': 14.96254176, 'Con': '25351', 'Lab': '18141', 'LD': '3026'
+            },
+            {
+                'Constituency': 'Stoke-On-Trent North', 'MP': 'Jonathan Gullis', 'Winning party': 'Con', 'Electorate': '68298', 'Valid votes': '40134', 'Majority': '6286', 'Majority (%)': 15.66253052, 'Con': '20974', 'Lab': '14688', 'LD': '1268'
+            },
+            {
+                'Constituency': 'Crewe and Nantwich', 'MP': 'Kieran Mullan', 'Winning party': 'Con', 'Electorate': '80321', 'Valid votes': '54032', 'Majority': '8508', 'Majority (%)': 15.74622446, 'Con': '28704', 'Lab': '20196', 'LD': '2618'
+            },
+            {
+                'Constituency': 'Wells', 'MP': 'James Heappey', 'Winning party': 'Con', 'Electorate': '81898', 'Valid votes': '61628', 'Majority': '9991', 'Majority (%)': 16.21178685, 'Con': '33336', 'Lab': '4304', 'LD': '23345'
+            },
+            {
+                'Constituency': 'Harrow East', 'MP': 'Bob Blackman', 'Winning party': 'Con', 'Electorate': '72106', 'Valid votes': '49491', 'Majority': '8170', 'Majority (%)': 16.50805197, 'Con': '26935', 'Lab': '18765', 'LD': '3791'
+            },
+            {
+                'Constituency': 'Sutton and Cheam', 'MP': 'Paul Scully', 'Winning party': 'Con', 'Electorate': '71779', 'Valid votes': '50487', 'Majority': '8351', 'Majority (%)': 16.54089171, 'Con': '25235', 'Lab': '7200', 'LD': '16884'
+            },
+            {
+                'Constituency': 'Newcastle-Under-Lyme', 'MP': 'Aaron Bell', 'Winning party': 'Con', 'Electorate': '68211', 'Valid votes': '44739', 'Majority': '7446', 'Majority (%)': 16.64319721, 'Con': '23485', 'Lab': '16039', 'LD': '2361'
+            },
+            {
+                'Constituency': 'Crawley', 'MP': 'Henry Smith', 'Winning party': 'Con', 'Electorate': '74207', 'Valid votes': '49899', 'Majority': '8360', 'Majority (%)': 16.75384276, 'Con': '27040', 'Lab': '18680', 'LD': '2728'
+            },
+            {
+                'Constituency': 'Clwyd West', 'MP': 'David Jones', 'Winning party': 'Con', 'Electorate': '57714', 'Valid votes': '40203', 'Majority': '6747', 'Majority (%)': 16.78232968, 'Con': '20403', 'Lab': '13656', 'LD': '2237'
+            },
+            {
+                'Constituency': 'Corby', 'MP': 'Tom Pursglove', 'Winning party': 'Con', 'Electorate': '86153', 'Valid votes': '60475', 'Majority': '10268', 'Majority (%)': 16.97891691, 'Con': '33410', 'Lab': '23142', 'LD': '3923'
+            },
+            {
+                'Constituency': 'Harrogate and Knaresborough', 'MP': 'Andrew Jones', 'Winning party': 'Con', 'Electorate': '77941', 'Valid votes': '56937', 'Majority': '9675', 'Majority (%)': 16.99246536, 'Con': '29962', 'Lab': '5480', 'LD': '20287'
+            },
+            {
+                'Constituency': 'Scunthorpe', 'MP': 'Holly Mumby-Croft', 'Winning party': 'Con', 'Electorate': '61955', 'Valid votes': '37750', 'Majority': '6451', 'Majority (%)': 17.08874172, 'Con': '20306', 'Lab': '13855', 'LD': '875'
+            },
+            {
+                'Constituency': 'Brecon and Radnorshire', 'MP': 'Fay Jones', 'Winning party': 'Con', 'Electorate': '55490', 'Valid votes': '41319', 'Majority': '7131', 'Majority (%)': 17.25840412, 'Con': '21958', 'Lab': '3944', 'LD': '14827'
+            },
+            {
+                'Constituency': 'Camborne and Redruth', 'MP': 'George Eustice', 'Winning party': 'Con', 'Electorate': '70250', 'Valid votes': '50367', 'Majority': '8700', 'Majority (%)': 17.2732146, 'Con': '26764', 'Lab': '18064', 'LD': '3504'
+            },
+            {
+                'Constituency': 'Colchester', 'MP': 'Will Quince', 'Winning party': 'Con', 'Electorate': '82625', 'Valid votes': '53373', 'Majority': '9423', 'Majority (%)': 17.6549941, 'Con': '26917', 'Lab': '17494', 'LD': '7432'
+            },
+            {
+                'Constituency': 'Bishop Auckland', 'MP': 'Dehenna Davison', 'Winning party': 'Con', 'Electorate': '68170', 'Valid votes': '44805', 'Majority': '7962', 'Majority (%)': 17.77033813, 'Con': '24067', 'Lab': '16105', 'LD': '2133'
+            },
+            {
+                'Constituency': 'South East Cambridgeshire', 'MP': 'Lucy Frazer', 'Winning party': 'Con', 'Electorate': '86769', 'Valid votes': '64385', 'Majority': '11490', 'Majority (%)': 17.84577153, 'Con': '32187', 'Lab': '10492', 'LD': '20697'
+            },
+            {
+                'Constituency': 'Bournemouth East', 'MP': 'Tobias Ellwood', 'Winning party': 'Con', 'Electorate': '74125', 'Valid votes': '49274', 'Majority': '8806', 'Majority (%)': 17.87149409, 'Con': '24926', 'Lab': '16120', 'LD': '5418'
+            },
+            {
+                'Constituency': 'Stevenage', 'MP': 'Stephen McPartland', 'Winning party': 'Con', 'Electorate': '71562', 'Valid votes': '47683', 'Majority': '8562', 'Majority (%)': 17.95608498, 'Con': '25328', 'Lab': '16766', 'LD': '4132'
+            },
+            {
+                'Constituency': 'Bolton West', 'MP': 'Chris Green', 'Winning party': 'Con', 'Electorate': '73191', 'Valid votes': '49298', 'Majority': '8855', 'Majority (%)': 17.96218914, 'Con': '27255', 'Lab': '18400', 'LD': '2704'
+            },
+            {
+                'Constituency': 'York Outer', 'MP': 'Julian Sturdy', 'Winning party': 'Con', 'Electorate': '74673', 'Valid votes': '55347', 'Majority': '9985', 'Majority (%)': 18.04072488, 'Con': '27324', 'Lab': '17339', 'LD': '9992'
+            },
+            {
+                'Constituency': 'Woking', 'MP': 'Jonathan Lord', 'Winning party': 'Con', 'Electorate': '75424', 'Valid votes': '53937', 'Majority': '9767', 'Majority (%)': 18.10816323, 'Con': '26396', 'Lab': '8827', 'LD': '16629'
+            },
+            {
+                'Constituency': 'Taunton Deane', 'MP': 'Rebecca Pow', 'Winning party': 'Con', 'Electorate': '88676', 'Valid votes': '63733', 'Majority': '11700', 'Majority (%)': 18.3578366, 'Con': '34164', 'Lab': '4715', 'LD': '22464'
+            },
+            {
+                'Constituency': 'Carmarthen West and South Pembrokeshire', 'MP': 'Simon Hart', 'Winning party': 'Con', 'Electorate': '59158', 'Valid votes': '42114', 'Majority': '7745', 'Majority (%)': 18.39055896, 'Con': '22183', 'Lab': '14438', 'LD': '1860'
+            },
+            {
+                'Constituency': 'Wantage', 'MP': 'David Johnston', 'Winning party': 'Con', 'Electorate': '90867', 'Valid votes': '67173', 'Majority': '12653', 'Majority (%)': 18.83643726, 'Con': '34085', 'Lab': '10181', 'LD': '21432'
+            },
+            {
+                'Constituency': 'Shrewsbury and Atcham', 'MP': 'Daniel Kawczynski', 'Winning party': 'Con', 'Electorate': '82238', 'Valid votes': '59065', 'Majority': '11217', 'Majority (%)': 18.99094218, 'Con': '31021', 'Lab': '19804', 'LD': '5906'
+            },
+            {
+                'Constituency': 'Gloucester', 'MP': 'Richard Graham', 'Winning party': 'Con', 'Electorate': '81319', 'Valid votes': '53764', 'Majority': '10277', 'Majority (%)': 19.1150212, 'Con': '29159', 'Lab': '18882', 'LD': '4338'
+            },
+            {
+                'Constituency': 'Carlisle', 'MP': 'John Stevenson', 'Winning party': 'Con', 'Electorate': '65105', 'Valid votes': '42873', 'Majority': '8319', 'Majority (%)': 19.40382059, 'Con': '23659', 'Lab': '15340', 'LD': '2829'
+            },
+            {
+                'Constituency': 'Rossendale and Darwen', 'MP': 'Jake Berry', 'Winning party': 'Con', 'Electorate': '72770', 'Valid votes': '48822', 'Majority': '9522', 'Majority (%)': 19.50350252, 'Con': '27570', 'Lab': '18048', 'LD': '2011'
+            },
+            {
+                'Constituency': 'Chippenham', 'MP': 'Michelle Donelan', 'Winning party': 'Con', 'Electorate': '77221', 'Valid votes': '57099', 'Majority': '11288', 'Majority (%)': 19.76917284, 'Con': '30994', 'Lab': '6399', 'LD': '19706'
+            },
+            {
+                'Constituency': 'Monmouth', 'MP': 'David T. C. Davies', 'Winning party': 'Con', 'Electorate': '67098', 'Valid votes': '50217', 'Majority': '9982', 'Majority (%)': 19.87773065, 'Con': '26160', 'Lab': '16178', 'LD': '4909'
+            },
+            {
+                'Constituency': 'Macclesfield', 'MP': 'David Rutley', 'Winning party': 'Con', 'Electorate': '76216', 'Valid votes': '53867', 'Majority': '10711', 'Majority (%)': 19.88415913, 'Con': '28292', 'Lab': '17581', 'LD': '5684'
+            },
+            {
+                'Constituency': 'Scarborough and Whitby', 'MP': 'Robert Goodwill', 'Winning party': 'Con', 'Electorate': '74404', 'Valid votes': '49724', 'Majority': '10270', 'Majority (%)': 20.65401014, 'Con': '27593', 'Lab': '17323', 'LD': '3038'
+            },
+            {
+                'Constituency': 'Croydon South', 'MP': 'Chris Philp', 'Winning party': 'Con', 'Electorate': '83982', 'Valid votes': '59358', 'Majority': '12339', 'Majority (%)': 20.78742545, 'Con': '30985', 'Lab': '18646', 'LD': '7503'
+            },
+            {
+                'Constituency': 'South Ribble', 'MP': 'Katherine Fletcher', 'Winning party': 'Con', 'Electorate': '75351', 'Valid votes': '53784', 'Majority': '11199', 'Majority (%)': 20.8221776, 'Con': '30028', 'Lab': '18829', 'LD': '3720'
+            },
+            {
+                'Constituency': 'Welwyn Hatfield', 'MP': 'Grant Shapps', 'Winning party': 'Con', 'Electorate': '74892', 'Valid votes': '52053', 'Majority': '10955', 'Majority (%)': 21.04585711, 'Con': '27394', 'Lab': '16439', 'LD': '6602'
+            },
+            {
+                'Constituency': 'Mole Valley', 'MP': 'Paul Beresford', 'Winning party': 'Con', 'Electorate': '74665', 'Valid votes': '57110', 'Majority': '12041', 'Majority (%)': 21.08387323, 'Con': '31656', 'Lab': '2965', 'LD': '19615'
+            },
+            {
+                'Constituency': 'Romsey and Southampton North', 'MP': 'Caroline Nokes', 'Winning party': 'Con', 'Electorate': '68228', 'Valid votes': '51390', 'Majority': '10872', 'Majority (%)': 21.1558669, 'Con': '27862', 'Lab': '5898', 'LD': '16990'
+            },
+            {
+                'Constituency': 'Morley and Outwood', 'MP': 'Andrea Jenkyns', 'Winning party': 'Con', 'Electorate': '78803', 'Valid votes': '51930', 'Majority': '11267', 'Majority (%)': 21.69651454, 'Con': '29424', 'Lab': '18157', 'LD': '2285'
+            },
+            {
+                'Constituency': 'Erewash', 'MP': 'Maggie Throup', 'Winning party': 'Con', 'Electorate': '72523', 'Valid votes': '48814', 'Majority': '10606', 'Majority (%)': 21.72737329, 'Con': '27560', 'Lab': '16954', 'LD': '2487'
+            },
+            {
+                'Constituency': 'South Thanet', 'MP': 'Craig Mackinlay', 'Winning party': 'Con', 'Electorate': '73223', 'Valid votes': '48257', 'Majority': '10587', 'Majority (%)': 21.93878608, 'Con': '27084', 'Lab': '16497', 'LD': '2727'
+            },
+            {
+                'Constituency': 'Bournemouth West', 'MP': 'Conor Burns', 'Winning party': 'Con', 'Electorate': '74205', 'Valid votes': '45977', 'Majority': '10150', 'Majority (%)': 22.07625552, 'Con': '24550', 'Lab': '14400', 'LD': '4931'
+            },
+            {
+                'Constituency': 'Blackpool North and Cleveleys', 'MP': 'Paul Maynard', 'Winning party': 'Con', 'Electorate': '63692', 'Valid votes': '38804', 'Majority': '8596', 'Majority (%)': 22.15235543, 'Con': '22364', 'Lab': '13768', 'LD': '1494'
+            },
+            {
+                'Constituency': 'Great Grimsby', 'MP': 'Lia Nici', 'Winning party': 'Con', 'Electorate': '61409', 'Valid votes': '33087', 'Majority': '7331', 'Majority (%)': 22.1567383, 'Con': '18150', 'Lab': '10819', 'LD': '1070'
+            },
+            {
+                'Constituency': 'Kingswood', 'MP': 'Chris Skidmore', 'Winning party': 'Con', 'Electorate': '68972', 'Valid votes': '49314', 'Majority': '11220', 'Majority (%)': 22.75215963, 'Con': '27712', 'Lab': '16492', 'LD': '3421'
+            },
+            {
+                'Constituency': 'Hexham', 'MP': 'Guy Opperman', 'Winning party': 'Con', 'Electorate': '61324', 'Valid votes': '46150', 'Majority': '10549', 'Majority (%)': 22.85807151, 'Con': '25152', 'Lab': '14603', 'LD': '4672'
+            },
+            {
+                'Constituency': 'West Dorset', 'MP': 'Chris Loder', 'Winning party': 'Con', 'Electorate': '81897', 'Valid votes': '60925', 'Majority': '14106', 'Majority (%)': 23.15305704, 'Con': '33589', 'Lab': '5729', 'LD': '19483'
+            },
+            {
+                'Constituency': 'South West Hertfordshire', 'MP': 'Gagan Mohindra', 'Winning party': 'Con', 'Electorate': '80499', 'Valid votes': '61191', 'Majority': '14408', 'Majority (%)': 23.5459463, 'Con': '30327', 'Lab': '7228', 'LD': '6251'
+            },
+            {
+                'Constituency': 'Thornbury and Yate', 'MP': 'Luke Hall', 'Winning party': 'Con', 'Electorate': '69492', 'Valid votes': '52243', 'Majority': '12369', 'Majority (%)': 23.67589916, 'Con': '30202', 'Lab': '4208', 'LD': '17833'
+            },
+            {
+                'Constituency': 'Bromley and Chislehurst', 'MP': 'Robert Neill', 'Winning party': 'Con', 'Electorate': '66697', 'Valid votes': '45566', 'Majority': '10891', 'Majority (%)': 23.90159329, 'Con': '23958', 'Lab': '13067', 'LD': '6621'
+            },
+            {
+                'Constituency': 'Henley', 'MP': 'John Howell', 'Winning party': 'Con', 'Electorate': '76646', 'Valid votes': '58759', 'Majority': '14053', 'Majority (%)': 23.91633622, 'Con': '32189', 'Lab': '5698', 'LD': '18136'
+            },
+            {
+                'Constituency': 'Chelsea and Fulham', 'MP': 'Greg Hands', 'Winning party': 'Con', 'Electorate': '67110', 'Valid votes': '46821', 'Majority': '11241', 'Majority (%)': 24.00845774, 'Con': '23345', 'Lab': '10872', 'LD': '12104'
+            },
+            {
+                'Constituency': 'Thurrock', 'MP': 'Jacqueline Doyle-Price', 'Winning party': 'Con', 'Electorate': '79659', 'Valid votes': '47467', 'Majority': '11482', 'Majority (%)': 24.18943687, 'Con': '27795', 'Lab': '16313', 'LD': '1510'
+            },
+            {
+                'Constituency': 'Dover', 'MP': 'Natalie Elphicke', 'Winning party': 'Con', 'Electorate': '76355', 'Valid votes': '50701', 'Majority': '12278', 'Majority (%)': 24.21648488, 'Con': '28830', 'Lab': '16552', 'LD': '2895'
+            },
+            {
+                'Constituency': 'Middlesbrough South and East Cleveland', 'MP': 'Simon Clarke', 'Winning party': 'Con', 'Electorate': '72348', 'Valid votes': '47817', 'Majority': '11626', 'Majority (%)': 24.31352866, 'Con': '28135', 'Lab': '16509', 'LD': '1953'
+            },
+            {
+                'Constituency': 'Totnes', 'MP': 'Anthony Mangnall', 'Winning party': 'Con', 'Electorate': '69863', 'Valid votes': '52182', 'Majority': '12724', 'Majority (%)': 24.38388716, 'Con': '27751', 'Lab': '8860', 'LD': '15027'
+            },
+            {
+                'Constituency': 'Witney', 'MP': 'Robert Courts', 'Winning party': 'Con', 'Electorate': '83845', 'Valid votes': '61305', 'Majority': '15177', 'Majority (%)': 24.75654514, 'Con': '33856', 'Lab': '8770', 'LD': '18679'
+            },
+            {
+                'Constituency': 'Telford', 'MP': 'Lucy Allan', 'Winning party': 'Con', 'Electorate': '68921', 'Valid votes': '42825', 'Majority': '10941', 'Majority (%)': 25.54816112, 'Con': '25546', 'Lab': '14605', 'LD': '2674'
+            },
+            {
+                'Constituency': 'Basingstoke', 'MP': 'Maria Miller', 'Winning party': 'Con', 'Electorate': '82928', 'Valid votes': '54713', 'Majority': '14198', 'Majority (%)': 25.94995705, 'Con': '29593', 'Lab': '15395', 'LD': '6841'
+            },
+            {
+                'Constituency': 'North East Somerset', 'MP': 'Jacob Rees-Mogg', 'Winning party': 'Con', 'Electorate': '73692', 'Valid votes': '56308', 'Majority': '14729', 'Majority (%)': 26.15791717, 'Con': '28360', 'Lab': '13631', 'LD': '12422'
+            },
+            {
+                'Constituency': 'North East Derbyshire', 'MP': 'Lee Rowley', 'Winning party': 'Con', 'Electorate': '72345', 'Valid votes': '49217', 'Majority': '12876', 'Majority (%)': 26.1616921, 'Con': '28897', 'Lab': '16021', 'LD': '3021'
+            },
+            {
+                'Constituency': 'Rugby', 'MP': 'Mark Pawsey', 'Winning party': 'Con', 'Electorate': '72292', 'Valid votes': '50814', 'Majority': '13447', 'Majority (%)': 26.46317944, 'Con': '29255', 'Lab': '15808', 'LD': '4207'
+            },
+            {
+                'Constituency': 'Eastleigh', 'MP': 'Paul Holmes', 'Winning party': 'Con', 'Electorate': '83880', 'Valid votes': '58971', 'Majority': '15607', 'Majority (%)': 26.46555086, 'Con': '32690', 'Lab': '7559', 'LD': '17083'
+            },
+            {
+                'Constituency': 'Rochford and Southend East', 'MP': 'James Duddridge', 'Winning party': 'Con', 'Electorate': '75624', 'Valid votes': '46136', 'Majority': '12286', 'Majority (%)': 26.62996359, 'Con': '27063', 'Lab': '14777', 'LD': '2822'
+            },
+            {
+                'Constituency': 'North Devon', 'MP': 'Selaine Saxby', 'Winning party': 'Con', 'Electorate': '75859', 'Valid votes': '55581', 'Majority': '14813', 'Majority (%)': 26.65119375, 'Con': '31479', 'Lab': '5097', 'LD': '16666'
+            },
+            {
+                'Constituency': 'Banbury', 'MP': 'Victoria Prentis', 'Winning party': 'Con', 'Electorate': '90116', 'Valid votes': '62921', 'Majority': '16813', 'Majority (%)': 26.72080863, 'Con': '34148', 'Lab': '17335', 'LD': '8831'
+            },
+            {
+                'Constituency': 'Newbury', 'MP': 'Laura Farris', 'Winning party': 'Con', 'Electorate': '83414', 'Valid votes': '59998', 'Majority': '16047', 'Majority (%)': 26.74589153, 'Con': '34431', 'Lab': '4404', 'LD': '18384'
+            },
+            {
+                'Constituency': 'Tunbridge Wells', 'MP': 'Gregory Clark', 'Winning party': 'Con', 'Electorate': '74823', 'Valid votes': '54650', 'Majority': '14645', 'Majority (%)': 26.79780421, 'Con': '30119', 'Lab': '8098', 'LD': '15474'
+            },
+            {
+                'Constituency': 'Worthing West', 'MP': 'Peter Bottomley', 'Winning party': 'Con', 'Electorate': '78585', 'Valid votes': '54648', 'Majority': '14823', 'Majority (%)': 27.12450593, 'Con': '30475', 'Lab': '15652', 'LD': '6024'
+            },
+            {
+                'Constituency': 'Beaconsfield', 'MP': 'Joy Morrissey', 'Winning party': 'Con', 'Electorate': '77720', 'Valid votes': '57868', 'Majority': '15712', 'Majority (%)': 27.15144812, 'Con': '32477', 'Lab': '5756', 'LD': '0'
+            },
+            {
+                'Constituency': 'Yeovil', 'MP': 'Marcus Fysh', 'Winning party': 'Con', 'Electorate': '82468', 'Valid votes': '59260', 'Majority': '16181', 'Majority (%)': 27.30509619, 'Con': '34588', 'Lab': '3761', 'LD': '18407'
+            },
+            {
+                'Constituency': 'Bassetlaw', 'MP': 'Brendan Clarke-Smith', 'Winning party': 'Con', 'Electorate': '80024', 'Valid votes': '50841', 'Majority': '14013', 'Majority (%)': 27.56240042, 'Con': '28078', 'Lab': '14065', 'LD': '3332'
+            },
+            {
+                'Constituency': 'Stafford', 'MP': 'Theo Clarke', 'Winning party': 'Con', 'Electorate': '72572', 'Valid votes': '51149', 'Majority': '14377', 'Majority (%)': 28.1080764, 'Con': '29992', 'Lab': '15615', 'LD': '3175'
+            },
+            {
+                'Constituency': 'Beckenham', 'MP': 'Bob Stewart', 'Winning party': 'Con', 'Electorate': '68662', 'Valid votes': '50555', 'Majority': '14258', 'Majority (%)': 28.20294729, 'Con': '27282', 'Lab': '13024', 'LD': '8194'
+            },
+            {
+                'Constituency': 'North Somerset', 'MP': 'Liam Fox', 'Winning party': 'Con', 'Electorate': '80194', 'Valid votes': '62055', 'Majority': '17536', 'Majority (%)': 28.25880268, 'Con': '32801', 'Lab': '15265', 'LD': '11051'
+            },
+            {
+                'Constituency': 'North Norfolk', 'MP': 'Duncan Baker', 'Winning party': 'Con', 'Electorate': '70729', 'Valid votes': '50823', 'Majority': '14395', 'Majority (%)': 28.32379041, 'Con': '29792', 'Lab': '3895', 'LD': '15397'
+            },
+            {
+                'Constituency': 'Hemel Hempstead', 'MP': 'Mike Penning', 'Winning party': 'Con', 'Electorate': '74035', 'Valid votes': '51271', 'Majority': '14563', 'Majority (%)': 28.40397106, 'Con': '28968', 'Lab': '14405', 'LD': '6317'
+            },
+            {
+                'Constituency': 'Stoke-On-Trent South', 'MP': 'Jack Brereton', 'Winning party': 'Con', 'Electorate': '64491', 'Valid votes': '39604', 'Majority': '11271', 'Majority (%)': 28.45924654, 'Con': '24632', 'Lab': '13361', 'LD': '1611'
+            },
+            {
+                'Constituency': 'Halesowen and Rowley Regis', 'MP': 'James Morris', 'Winning party': 'Con', 'Electorate': '68300', 'Valid votes': '42345', 'Majority': '12074', 'Majority (%)': 28.51340182, 'Con': '25607', 'Lab': '13533', 'LD': '1738'
+            },
+            {
+                'Constituency': 'North Cornwall', 'MP': 'Scott Mann', 'Winning party': 'Con', 'Electorate': '69935', 'Valid votes': '51678', 'Majority': '14752', 'Majority (%)': 28.54599636, 'Con': '30671', 'Lab': '4516', 'LD': '15919'
+            },
+            {
+                'Constituency': 'Aylesbury', 'MP': 'Rob Butler', 'Winning party': 'Con', 'Electorate': '86665', 'Valid votes': '60576', 'Majority': '17373', 'Majority (%)': 28.67967512, 'Con': '32737', 'Lab': '15364', 'LD': '10081'
+            },
+            {
+                'Constituency': 'Mid Sussex', 'MP': 'Mims Davies', 'Winning party': 'Con', 'Electorate': '85146', 'Valid votes': '62762', 'Majority': '18197', 'Majority (%)': 28.99365858, 'Con': '33455', 'Lab': '11218', 'LD': '15258'
+            },
+            {
+                'Constituency': 'Nuneaton', 'MP': 'Marcus Jones', 'Winning party': 'Con', 'Electorate': '70226', 'Valid votes': '45190', 'Majority': '13144', 'Majority (%)': 29.08608099, 'Con': '27390', 'Lab': '14246', 'LD': '1862'
+            },
+            {
+                'Constituency': 'Chesham and Amersham', 'MP': 'Cheryl Gillan', 'Winning party': 'Con', 'Electorate': '72542', 'Valid votes': '55685', 'Majority': '16223', 'Majority (%)': 29.1335189, 'Con': '30850', 'Lab': '7166', 'LD': '14627'
+            },
+            {
+                'Constituency': 'Plymouth, Moor View', 'MP': 'Johnny Mercer', 'Winning party': 'Con', 'Electorate': '69430', 'Valid votes': '44239', 'Majority': '12897', 'Majority (%)': 29.15300979, 'Con': '26831', 'Lab': '13934', 'LD': '2301'
+            },
+            {
+                'Constituency': 'North Swindon', 'MP': 'Justin Tomlinson', 'Winning party': 'Con', 'Electorate': '82441', 'Valid votes': '55115', 'Majority': '16171', 'Majority (%)': 29.34046993, 'Con': '32584', 'Lab': '16413', 'LD': '4408'
+            },
+            {
+                'Constituency': 'Somerton and Frome', 'MP': 'David Warburton', 'Winning party': 'Con', 'Electorate': '85866', 'Valid votes': '64896', 'Majority': '19213', 'Majority (%)': 29.60583087, 'Con': '36230', 'Lab': '8354', 'LD': '17017'
+            },
+            {
+                'Constituency': 'St Austell and Newquay', 'MP': 'Steve Double', 'Winning party': 'Con', 'Electorate': '79930', 'Valid votes': '55776', 'Majority': '16526', 'Majority (%)': 29.62923121, 'Con': '31273', 'Lab': '14747', 'LD': '5861'
+            },
+            {
+                'Constituency': 'Stourbridge', 'MP': 'Suzanne Webb', 'Winning party': 'Con', 'Electorate': '69891', 'Valid votes': '45689', 'Majority': '13571', 'Majority (%)': 29.70299197, 'Con': '27534', 'Lab': '13963', 'LD': '2523'
+            },
+            {
+                'Constituency': 'Burton', 'MP': 'Kate Griffiths', 'Winning party': 'Con', 'Electorate': '75036', 'Valid votes': '48738', 'Majority': '14496', 'Majority (%)': 29.7427059, 'Con': '29560', 'Lab': '15064', 'LD': '2681'
+            },
+            {
+                'Constituency': 'Elmet and Rothwell', 'MP': 'Alec Shelbrooke', 'Winning party': 'Con', 'Electorate': '80957', 'Valid votes': '58225', 'Majority': '17353', 'Majority (%)': 29.80334908, 'Con': '33726', 'Lab': '16373', 'LD': '5155'
+            },
+            {
+                'Constituency': 'Epsom and Ewell', 'MP': 'Chris Grayling', 'Winning party': 'Con', 'Electorate': '81138', 'Valid votes': '59451', 'Majority': '17873', 'Majority (%)': 30.06341357, 'Con': '31819', 'Lab': '10226', 'LD': '13946'
+            },
+            {
+                'Constituency': 'Harborough', 'MP': "Neil O'Brien", 'Winning party': 'Con', 'Electorate': '80151', 'Valid votes': '57319', 'Majority': '17278', 'Majority (%)': 30.14358241, 'Con': '31698', 'Lab': '14420', 'LD': '9103'
+            },
+            {
+                'Constituency': 'Bexleyheath and Crayford', 'MP': 'David Evennett', 'Winning party': 'Con', 'Electorate': '65466', 'Valid votes': '43246', 'Majority': '13103', 'Majority (%)': 30.29875595, 'Con': '25856', 'Lab': '12753', 'LD': '2819'
+            },
+            {
+                'Constituency': 'Mid Dorset and North Poole', 'MP': 'Michael Tomlinson', 'Winning party': 'Con', 'Electorate': '65427', 'Valid votes': '48930', 'Majority': '14898', 'Majority (%)': 30.44757817, 'Con': '29548', 'Lab': '3402', 'LD': '14650'
+            },
+            {
+                'Constituency': 'Central Devon', 'MP': 'Mel Stride', 'Winning party': 'Con', 'Electorate': '74296', 'Valid votes': '58072', 'Majority': '17721', 'Majority (%)': 30.51556688, 'Con': '32095', 'Lab': '14374', 'LD': '8770'
+            },
+            {
+                'Constituency': 'Sherwood', 'MP': 'Mark Spencer', 'Winning party': 'Con', 'Electorate': '77888', 'Valid votes': '52709', 'Majority': '16186', 'Majority (%)': 30.7082282, 'Con': '32049', 'Lab': '15863', 'LD': '2883'
+            },
+            {
+                'Constituency': 'Weston-Super-Mare', 'MP': 'John Penrose', 'Winning party': 'Con', 'Electorate': '82526', 'Valid votes': '55614', 'Majority': '17121', 'Majority (%)': 30.78541374, 'Con': '31983', 'Lab': '14862', 'LD': '6935'
+            },
+            {
+                'Constituency': 'Forest Of Dean', 'MP': 'Mark Harper', 'Winning party': 'Con', 'Electorate': '71438', 'Valid votes': '51475', 'Majority': '15869', 'Majority (%)': 30.82855755, 'Con': '30680', 'Lab': '14811', 'LD': '0'
+            },
+            {
+                'Constituency': 'Chelmsford', 'MP': 'Vicky Ford', 'Winning party': 'Con', 'Electorate': '80394', 'Valid votes': '57122', 'Majority': '17621', 'Majority (%)': 30.84800952, 'Con': '31934', 'Lab': '10295', 'LD': '14313'
+            },
+            {
+                'Constituency': 'Ruislip, Northwood and Pinner', 'MP': 'David Simmonds', 'Winning party': 'Con', 'Electorate': '72816', 'Valid votes': '52904', 'Majority': '16394', 'Majority (%)': 30.98820505, 'Con': '29391', 'Lab': '12997', 'LD': '7986'
+            },
+            {
+                'Constituency': 'Southend West', 'MP': 'David Amess', 'Winning party': 'Con', 'Electorate': '69043', 'Valid votes': '46537', 'Majority': '14459', 'Majority (%)': 31.06990137, 'Con': '27555', 'Lab': '13096', 'LD': '5312'
+            },
+            {
+                'Constituency': 'Mid Derbyshire', 'MP': 'Pauline Latham', 'Winning party': 'Con', 'Electorate': '67442', 'Valid votes': '49356', 'Majority': '15385', 'Majority (%)': 31.17148878, 'Con': '29027', 'Lab': '13642', 'LD': '4756'
+            },
+            {
+                'Constituency': 'Surrey Heath', 'MP': 'Michael Gove', 'Winning party': 'Con', 'Electorate': '81349', 'Valid votes': '58654', 'Majority': '18349', 'Majority (%)': 31.28345893, 'Con': '34358', 'Lab': '5407', 'LD': '16009'
+            },
+            {
+                'Constituency': 'Dudley North', 'MP': 'Marco Longhi', 'Winning party': 'Con', 'Electorate': '61936', 'Valid votes': '36684', 'Majority': '11533', 'Majority (%)': 31.4387744, 'Con': '23134', 'Lab': '11601', 'LD': '1210'
+            },
+            {
+                'Constituency': 'Wyre and Preston North', 'MP': 'Ben Wallace', 'Winning party': 'Con', 'Electorate': '74775', 'Valid votes': '52924', 'Majority': '16781', 'Majority (%)': 31.70773184, 'Con': '31589', 'Lab': '14808', 'LD': '4463'
+            },
+            {
+                'Constituency': 'Isle Of Wight', 'MP': 'Bob Seely', 'Winning party': 'Con', 'Electorate': '113021', 'Valid votes': '74442', 'Majority': '23737', 'Majority (%)': 31.88656941, 'Con': '41815', 'Lab': '18078', 'LD': '0'
+            },
+            {
+                'Constituency': 'Buckingham', 'MP': 'Greg Smith', 'Winning party': 'Con', 'Electorate': '83146', 'Valid votes': '63458', 'Majority': '20411', 'Majority (%)': 32.1645813, 'Con': '37035', 'Lab': '7638', 'LD': '16624'
+            },
+            {
+                'Constituency': 'North Wiltshire', 'MP': 'James Gray', 'Winning party': 'Con', 'Electorate': '73280', 'Valid votes': '54758', 'Majority': '17626', 'Majority (%)': 32.1889039, 'Con': '32373', 'Lab': '5699', 'LD': '14747'
+            },
+            {
+                'Constituency': 'Congleton', 'MP': 'Fiona Bruce', 'Winning party': 'Con', 'Electorate': '80930', 'Valid votes': '57233', 'Majority': '18561', 'Majority (%)': 32.43059074, 'Con': '33747', 'Lab': '15186', 'LD': '6026'
+            },
+            {
+                'Constituency': 'Harlow', 'MP': 'Robert Halfon', 'Winning party': 'Con', 'Electorate': '68078', 'Valid votes': '43354', 'Majority': '14063', 'Majority (%)': 32.43760668, 'Con': '27510', 'Lab': '13447', 'LD': '2397'
+            },
+            {
+                'Constituency': 'Hertford and Stortford', 'MP': 'Julie Marson', 'Winning party': 'Con', 'Electorate': '81765', 'Valid votes': '60094', 'Majority': '19620', 'Majority (%)': 32.64885013, 'Con': '33712', 'Lab': '14092', 'LD': '8596'
+            },
+            {
+                'Constituency': 'Walsall North', 'MP': 'Eddie Hughes', 'Winning party': 'Con', 'Electorate': '67177', 'Valid votes': '36556', 'Majority': '11965', 'Majority (%)': 32.7306051, 'Con': '23334', 'Lab': '11369', 'LD': '1236'
+            },
+            {
+                'Constituency': 'Gravesham', 'MP': 'Adam Holloway', 'Winning party': 'Con', 'Electorate': '73242', 'Valid votes': '47560', 'Majority': '15581', 'Majority (%)': 32.7607233, 'Con': '29580', 'Lab': '13999', 'LD': '2584'
+            },
+            {
+                'Constituency': 'Huntingdon', 'MP': 'Jonathan Djanogly', 'Winning party': 'Con', 'Electorate': '84657', 'Valid votes': '59147', 'Majority': '19383', 'Majority (%)': 32.77089286, 'Con': '32386', 'Lab': '13003', 'LD': '9432'
+            },
+            {
+                'Constituency': 'North East Hertfordshire', 'MP': 'Oliver Heald', 'Winning party': 'Con', 'Electorate': '76123', 'Valid votes': '55327', 'Majority': '18189', 'Majority (%)': 32.8754496, 'Con': '31293', 'Lab': '13104', 'LD': '8563'
+            },
+            {
+                'Constituency': 'Rochester and Strood', 'MP': 'Kelly Tolhurst', 'Winning party': 'Con', 'Electorate': '82056', 'Valid votes': '51926', 'Majority': '17072', 'Majority (%)': 32.87755652, 'Con': '31151', 'Lab': '14079', 'LD': '3717'
+            },
+            {
+                'Constituency': 'Gillingham and Rainham', 'MP': 'Rehman Chishti', 'Winning party': 'Con', 'Electorate': '73549', 'Valid votes': '45958', 'Majority': '15119', 'Majority (%)': 32.89742809, 'Con': '28173', 'Lab': '13054', 'LD': '2503'
+            },
+            {
+                'Constituency': 'The Cotswolds', 'MP': 'Geoffrey Clifton-Brown', 'Winning party': 'Con', 'Electorate': '81939', 'Valid votes': '61176', 'Majority': '20214', 'Majority (%)': 33.04236956, 'Con': '35484', 'Lab': '7110', 'LD': '15270'
+            },
+            {
+                'Constituency': 'Mansfield', 'MP': 'Ben Bradley', 'Winning party': 'Con', 'Electorate': '77131', 'Valid votes': '49273', 'Majority': '16306', 'Majority (%)': 33.09317476, 'Con': '31484', 'Lab': '15178', 'LD': '1626'
+            },
+            {
+                'Constituency': 'Newton Abbot', 'MP': 'Anne Marie Morris', 'Winning party': 'Con', 'Electorate': '72529', 'Valid votes': '52556', 'Majority': '17501', 'Majority (%)': 33.2997184, 'Con': '29190', 'Lab': '9329', 'LD': '11689'
+            },
+            {
+                'Constituency': 'Ribble Valley', 'MP': 'Nigel Evans', 'Winning party': 'Con', 'Electorate': '79247', 'Valid votes': '55284', 'Majority': '18439', 'Majority (%)': 33.35323059, 'Con': '33346', 'Lab': '14907', 'LD': '4776'
+            },
+            {
+                'Constituency': 'Maidenhead', 'MP': 'Theresa May', 'Winning party': 'Con', 'Electorate': '76668', 'Valid votes': '56492', 'Majority': '18846', 'Majority (%)': 33.36047582, 'Con': '32620', 'Lab': '7882', 'LD': '13774'
+            },
+            {
+                'Constituency': 'Horsham', 'MP': 'Jeremy Quin', 'Winning party': 'Con', 'Electorate': '86730', 'Valid votes': '63242', 'Majority': '21127', 'Majority (%)': 33.40659688, 'Con': '35900', 'Lab': '9424', 'LD': '14773'
+            },
+            {
+                'Constituency': 'South Dorset', 'MP': 'Richard Drax', 'Winning party': 'Con', 'Electorate': '73809', 'Valid votes': '51058', 'Majority': '17153', 'Majority (%)': 33.59512711, 'Con': '30024', 'Lab': '12871', 'LD': '5432'
+            },
+            {
+                'Constituency': 'Kettering', 'MP': 'Philip Hollobone', 'Winning party': 'Con', 'Electorate': '73164', 'Valid votes': '49361', 'Majority': '16765', 'Majority (%)': 33.9640607, 'Con': '29787', 'Lab': '13022', 'LD': '3367'
+            },
+            {
+                'Constituency': 'South Norfolk', 'MP': 'Richard Bacon', 'Winning party': 'Con', 'Electorate': '86214', 'Valid votes': '62484', 'Majority': '21275', 'Majority (%)': 34.04871647, 'Con': '36258', 'Lab': '14983', 'LD': '8744'
+            },
+            {
+                'Constituency': 'North East Hampshire', 'MP': 'Ranil Jayawardena', 'Winning party': 'Con', 'Electorate': '78954', 'Valid votes': '59270', 'Majority': '20211', 'Majority (%)': 34.0998819, 'Con': '35280', 'Lab': '5760', 'LD': '15069'
+            },
+            {
+                'Constituency': 'Runnymede and Weybridge', 'MP': 'Ben Spencer', 'Winning party': 'Con', 'Electorate': '77196', 'Valid votes': '53289', 'Majority': '18270', 'Majority (%)': 34.2847492, 'Con': '29262', 'Lab': '10992', 'LD': '9236'
+            },
+            {
+                'Constituency': 'Portsmouth North', 'MP': 'Penny Mordaunt', 'Winning party': 'Con', 'Electorate': '71299', 'Valid votes': '45910', 'Majority': '15780', 'Majority (%)': 34.3715966, 'Con': '28172', 'Lab': '12392', 'LD': '3419'
+            },
+            {
+                'Constituency': 'Reigate', 'MP': 'Crispin Blunt', 'Winning party': 'Con', 'Electorate': '74242', 'Valid votes': '53156', 'Majority': '18310', 'Majority (%)': 34.44578223, 'Con': '28665', 'Lab': '10355', 'LD': '10320'
+            },
+            {
+                'Constituency': 'East Hampshire', 'MP': 'Damian Hinds', 'Winning party': 'Con', 'Electorate': '76478', 'Valid votes': '56895', 'Majority': '19696', 'Majority (%)': 34.61815625, 'Con': '33446', 'Lab': '6287', 'LD': '13750'
+            },
+            {
+                'Constituency': 'Derbyshire Dales', 'MP': 'Sarah Dines', 'Winning party': 'Con', 'Electorate': '65080', 'Valid votes': '50016', 'Majority': '17381', 'Majority (%)': 34.75087972, 'Con': '29356', 'Lab': '11975', 'LD': '6627'
+            },
+            {
+                'Constituency': 'Eddisbury', 'MP': 'Edward Timpson', 'Winning party': 'Con', 'Electorate': '73700', 'Valid votes': '52971', 'Majority': '18443', 'Majority (%)': 34.81716411, 'Con': '30095', 'Lab': '11652', 'LD': '9582'
+            },
+            {
+                'Constituency': 'Aldershot', 'MP': 'Leo Docherty', 'Winning party': 'Con', 'Electorate': '72617', 'Valid votes': '47932', 'Majority': '16698', 'Majority (%)': 34.83685221, 'Con': '27980', 'Lab': '11282', 'LD': '6920'
+            },
+            {
+                'Constituency': 'South West Bedfordshire', 'MP': 'Andrew Selous', 'Winning party': 'Con', 'Electorate': '79926', 'Valid votes': '53307', 'Majority': '18583', 'Majority (%)': 34.86033729, 'Con': '32212', 'Lab': '13629', 'LD': '5435'
+            },
+            {
+                'Constituency': 'Chichester', 'MP': 'Gillian Keegan', 'Winning party': 'Con', 'Electorate': '85499', 'Valid votes': '61243', 'Majority': '21490', 'Majority (%)': 35.08972454, 'Con': '35402', 'Lab': '9069', 'LD': '13912'
+            },
+            {
+                'Constituency': 'Torbay', 'MP': 'Kevin Foster', 'Winning party': 'Con', 'Electorate': '75054', 'Valid votes': '50426', 'Majority': '17749', 'Majority (%)': 35.19811209, 'Con': '29863', 'Lab': '6562', 'LD': '12114'
+            },
+            {
+                'Constituency': 'Waveney', 'MP': 'Peter Aldous', 'Winning party': 'Con', 'Electorate': '82791', 'Valid votes': '51129', 'Majority': '18002', 'Majority (%)': 35.2089812, 'Con': '31778', 'Lab': '13776', 'LD': '2603'
+            },
+            {
+                'Constituency': 'Suffolk Coastal', 'MP': 'Th�r�se Coffey', 'Winning party': 'Con', 'Electorate': '81910', 'Valid votes': '58308', 'Majority': '20533', 'Majority (%)': 35.21472182, 'Con': '32958', 'Lab': '12425', 'LD': '8719'
+            },
+            {
+                'Constituency': 'Berwick-Upon-Tweed', 'MP': 'Anne-Marie Trevelyan', 'Winning party': 'Con', 'Electorate': '59939', 'Valid votes': '42109', 'Majority': '14835', 'Majority (%)': 35.22999834, 'Con': '23947', 'Lab': '9112', 'LD': '7656'
+            },
+            {
+                'Constituency': 'Dartford', 'MP': 'Gareth Johnson', 'Winning party': 'Con', 'Electorate': '82209', 'Valid votes': '54023', 'Majority': '19160', 'Majority (%)': 35.46637543, 'Con': '34006', 'Lab': '14846', 'LD': '3736'
+            },
+            {
+                'Constituency': 'Montgomeryshire', 'MP': 'Craig Williams', 'Winning party': 'Con', 'Electorate': '48997', 'Valid votes': '34214', 'Majority': '12138', 'Majority (%)': 35.47670544, 'Con': '20020', 'Lab': '5585', 'LD': '7882'
+            },
+            {
+                'Constituency': 'Tatton', 'MP': 'Esther McVey', 'Winning party': 'Con', 'Electorate': '69018', 'Valid votes': '48967', 'Majority': '17387', 'Majority (%)': 35.50758674, 'Con': '28277', 'Lab': '10890', 'LD': '7712'
+            },
+            {
+                'Constituency': 'Fylde', 'MP': 'Mark Menzies', 'Winning party': 'Con', 'Electorate': '66847', 'Valid votes': '46659', 'Majority': '16611', 'Majority (%)': 35.60084871, 'Con': '28432', 'Lab': '11821', 'LD': '3748'
+            },
+            {
+                'Constituency': 'North Thanet', 'MP': 'Roger Gale', 'Winning party': 'Con', 'Electorate': '72756', 'Valid votes': '48178', 'Majority': '17189', 'Majority (%)': 35.67811034, 'Con': '30066', 'Lab': '12877', 'LD': '3439'
+            },
+            {
+                'Constituency': 'Selby and Ainsty', 'MP': 'Nigel Adams', 'Winning party': 'Con', 'Electorate': '78398', 'Valid votes': '56418', 'Majority': '20137', 'Majority (%)': 35.69250948, 'Con': '33995', 'Lab': '13858', 'LD': '4842'
+            },
+            {
+                'Constituency': 'Wellingborough', 'MP': 'Peter Bone', 'Winning party': 'Con', 'Electorate': '80765', 'Valid votes': '51913', 'Majority': '18540', 'Majority (%)': 35.71359775, 'Con': '32277', 'Lab': '13737', 'LD': '4078'
+            },
+            {
+                'Constituency': 'Folkestone and Hythe', 'MP': 'Damian Collins', 'Winning party': 'Con', 'Electorate': '88272', 'Valid votes': '59005', 'Majority': '21337', 'Majority (%)': 36.16134226, 'Con': '35483', 'Lab': '14146', 'LD': '5755'
+            },
+            {
+                'Constituency': 'South Derbyshire', 'MP': 'Heather Wheeler', 'Winning party': 'Con', 'Electorate': '79331', 'Valid votes': '53381', 'Majority': '19335', 'Majority (%)': 36.2207527, 'Con': '33502', 'Lab': '14167', 'LD': '3924'
+            },
+            {
+                'Constituency': 'Stratford-On-Avon', 'MP': 'Nadhim Zahawi', 'Winning party': 'Con', 'Electorate': '74037', 'Valid votes': '55048', 'Majority': '19972', 'Majority (%)': 36.2810638, 'Con': '33343', 'Lab': '6222', 'LD': '13371'
+            },
+            {
+                'Constituency': 'Redditch', 'MP': 'Rachel Maclean', 'Winning party': 'Con', 'Electorate': '65391', 'Valid votes': '44067', 'Majority': '16036', 'Majority (%)': 36.39004244, 'Con': '27907', 'Lab': '11871', 'LD': '2905'
+            },
+            {
+                'Constituency': 'Bracknell', 'MP': 'James Sunderland', 'Winning party': 'Con', 'Electorate': '78978', 'Valid votes': '54350', 'Majority': '19829', 'Majority (%)': 36.48390064, 'Con': '31894', 'Lab': '12065', 'LD': '7749'
+            },
+            {
+                'Constituency': 'Tewkesbury', 'MP': 'Laurence Robertson', 'Winning party': 'Con', 'Electorate': '83958', 'Valid votes': '61140', 'Majority': '22410', 'Majority (%)': 36.65358194, 'Con': '35728', 'Lab': '9310', 'LD': '13318'
+            },
+            {
+                'Constituency': 'Arundel and South Downs', 'MP': 'Andrew Griffith', 'Winning party': 'Con', 'Electorate': '81726', 'Valid votes': '61408', 'Majority': '22521', 'Majority (%)': 36.67437467, 'Con': '35566', 'Lab': '9722', 'LD': '13045'
+            },
+            {
+                'Constituency': 'Salisbury', 'MP': 'John Glen', 'Winning party': 'Con', 'Electorate': '74556', 'Valid votes': '53730', 'Majority': '19736', 'Majority (%)': 36.73180718, 'Con': '30280', 'Lab': '9675', 'LD': '10544'
+            },
+            {
+                'Constituency': 'Sutton Coldfield', 'MP': 'Andrew Mitchell', 'Winning party': 'Con', 'Electorate': '75638', 'Valid votes': '52325', 'Majority': '19272', 'Majority (%)': 36.83134257, 'Con': '31604', 'Lab': '12332', 'LD': '6358'
+            },
+            {
+                'Constituency': 'Amber Valley', 'MP': 'Nigel Mills', 'Winning party': 'Con', 'Electorate': '69976', 'Valid votes': '45567', 'Majority': '16886', 'Majority (%)': 37.0575197, 'Con': '29096', 'Lab': '12210', 'LD': '2873'
+            },
+            {
+                'Constituency': 'Spelthorne', 'MP': 'Kwasi Kwarteng', 'Winning party': 'Con', 'Electorate': '70929', 'Valid votes': '49510', 'Majority': '18393', 'Majority (%)': 37.15007069, 'Con': '29141', 'Lab': '10748', 'LD': '7499'
+            },
+            {
+                'Constituency': 'North East Bedfordshire', 'MP': 'Richard Fuller', 'Winning party': 'Con', 'Electorate': '90678', 'Valid votes': '65018', 'Majority': '24283', 'Majority (%)': 37.34811898, 'Con': '38443', 'Lab': '14160', 'LD': '7999'
+            },
+            {
+                'Constituency': 'Windsor', 'MP': 'Adam Afriyie', 'Winning party': 'Con', 'Electorate': '75038', 'Valid votes': '53750', 'Majority': '20079', 'Majority (%)': 37.35627907, 'Con': '31501', 'Lab': '8147', 'LD': '11422'
+            },
+            {
+                'Constituency': 'Staffordshire Moorlands', 'MP': 'Karen Bradley', 'Winning party': 'Con', 'Electorate': '65485', 'Valid votes': '43656', 'Majority': '16428', 'Majority (%)': 37.63056625, 'Con': '28192', 'Lab': '11764', 'LD': '2469'
+            },
+            {
+                'Constituency': 'Romford', 'MP': 'Andrew Rosindell', 'Winning party': 'Con', 'Electorate': '72350', 'Valid votes': '47231', 'Majority': '17893', 'Majority (%)': 37.88401685, 'Con': '30494', 'Lab': '12601', 'LD': '2708'
+            },
+            {
+                'Constituency': 'Poole', 'MP': 'Robert Syms', 'Winning party': 'Con', 'Electorate': '73989', 'Valid votes': '50451', 'Majority': '19116', 'Majority (%)': 37.89023012, 'Con': '29599', 'Lab': '10483', 'LD': '7819'
+            },
+            {
+                'Constituency': 'North West Leicestershire', 'MP': 'Andrew Bridgen', 'Winning party': 'Con', 'Electorate': '78935', 'Valid votes': '53821', 'Majority': '20400', 'Majority (%)': 37.9034206, 'Con': '33811', 'Lab': '13411', 'LD': '3614'
+            },
+            {
+                'Constituency': 'Mid Bedfordshire', 'MP': 'Nadine Dorries', 'Winning party': 'Con', 'Electorate': '87795', 'Valid votes': '64717', 'Majority': '24664', 'Majority (%)': 38.11054282, 'Con': '38692', 'Lab': '14028', 'LD': '8171'
+            },
+            {
+                'Constituency': 'Beverley and Holderness', 'MP': 'Graham Stuart', 'Winning party': 'Con', 'Electorate': '79696', 'Valid votes': '53542', 'Majority': '20448', 'Majority (%)': 38.19057936, 'Con': '33250', 'Lab': '12802', 'LD': '4671'
+            },
+            {
+                'Constituency': 'The Wrekin', 'MP': 'Mark Pritchard', 'Winning party': 'Con', 'Electorate': '70693', 'Valid votes': '48890', 'Majority': '18726', 'Majority (%)': 38.30231131, 'Con': '31029', 'Lab': '12303', 'LD': '4067'
+            },
+            {
+                'Constituency': 'Broadland', 'MP': 'Jerome Mayhew', 'Winning party': 'Con', 'Electorate': '78151', 'Valid votes': '56977', 'Majority': '21861', 'Majority (%)': 38.36811345, 'Con': '33934', 'Lab': '12073', 'LD': '9195'
+            },
+            {
+                'Constituency': 'Solihull', 'MP': 'Julian Knight', 'Winning party': 'Con', 'Electorate': '78760', 'Valid votes': '55344', 'Majority': '21273', 'Majority (%)': 38.43777103, 'Con': '32309', 'Lab': '11036', 'LD': '9977'
+            },
+            {
+                'Constituency': 'Kenilworth and Southam', 'MP': 'Jeremy Wright', 'Winning party': 'Con', 'Electorate': '68154', 'Valid votes': '52597', 'Majority': '20353', 'Majority (%)': 38.69612335, 'Con': '30351', 'Lab': '9440', 'LD': '9998'
+            },
+            {
+                'Constituency': 'Penrith and The Border', 'MP': 'Neil Hudson', 'Winning party': 'Con', 'Electorate': '67555', 'Valid votes': '47824', 'Majority': '18519', 'Majority (%)': 38.7232352, 'Con': '28875', 'Lab': '10356', 'LD': '5364'
+            },
+            {
+                'Constituency': 'Harwich and North Essex', 'MP': 'Bernard Jenkin', 'Winning party': 'Con', 'Electorate': '74153', 'Valid votes': '51963', 'Majority': '20182', 'Majority (%)': 38.83917403, 'Con': '31830', 'Lab': '11648', 'LD': '5866'
+            },
+            {
+                'Constituency': 'South East Cornwall', 'MP': 'Sheryll Murray', 'Winning party': 'Con', 'Electorate': '71825', 'Valid votes': '53655', 'Majority': '20971', 'Majority (%)': 39.08489423, 'Con': '31807', 'Lab': '10836', 'LD': '8650'
+            },
+            {
+                'Constituency': 'North Warwickshire', 'MP': 'Craig Tracey', 'Winning party': 'Con', 'Electorate': '70271', 'Valid votes': '45914', 'Majority': '17956', 'Majority (%)': 39.10789737, 'Con': '30249', 'Lab': '12293', 'LD': '2069'
+            },
+            {
+                'Constituency': 'South West Wiltshire', 'MP': 'Andrew Murrison', 'Winning party': 'Con', 'Electorate': '77969', 'Valid votes': '54895', 'Majority': '21630', 'Majority (%)': 39.40249567, 'Con': '33038', 'Lab': '11408', 'LD': '8015'
+            },
+            {
+                'Constituency': 'Hereford and South Herefordshire', 'MP': 'Jesse Norman', 'Winning party': 'Con', 'Electorate': '72085', 'Valid votes': '49646', 'Majority': '19686', 'Majority (%)': 39.65274141, 'Con': '30390', 'Lab': '10704', 'LD': '6181'
+            },
+            {
+                'Constituency': 'Newark', 'MP': 'Robert Jenrick', 'Winning party': 'Con', 'Electorate': '75850', 'Valid votes': '54762', 'Majority': '21816', 'Majority (%)': 39.83784376, 'Con': '34660', 'Lab': '12844', 'LD': '5308'
+            },
+            {
+                'Constituency': 'Ashford', 'MP': 'Damian Green', 'Winning party': 'Con', 'Electorate': '89553', 'Valid votes': '60059', 'Majority': '24029', 'Majority (%)': 40.00899116, 'Con': '37270', 'Lab': '13241', 'LD': '6048'
+            },
+            {
+                'Constituency': 'Stone', 'MP': 'William Cash', 'Winning party': 'Con', 'Electorate': '69378', 'Valid votes': '49843', 'Majority': '19945', 'Majority (%)': 40.01564914, 'Con': '31687', 'Lab': '11742', 'LD': '4412'
+            },
+            {
+                'Constituency': 'South West Devon', 'MP': 'Gary Streeter', 'Winning party': 'Con', 'Electorate': '72535', 'Valid votes': '53367', 'Majority': '21430', 'Majority (%)': 40.15590159, 'Con': '33286', 'Lab': '11856', 'LD': '6207'
+            },
+            {
+                'Constituency': 'Mid Norfolk', 'MP': 'George Freeman', 'Winning party': 'Con', 'Electorate': '82203', 'Valid votes': '56186', 'Majority': '22594', 'Majority (%)': 40.21286441, 'Con': '35051', 'Lab': '12457', 'LD': '7739'
+            },
+            {
+                'Constituency': 'North West Cambridgeshire', 'MP': 'Shailesh Vara', 'Winning party': 'Con', 'Electorate': '94909', 'Valid votes': '64533', 'Majority': '25983', 'Majority (%)': 40.26312119, 'Con': '40307', 'Lab': '14324', 'LD': '6881'
+            },
+            {
+                'Constituency': 'East Surrey', 'MP': 'Claire Coutinho', 'Winning party': 'Con', 'Electorate': '83148', 'Valid votes': '59690', 'Majority': '24040', 'Majority (%)': 40.27475289, 'Con': '35624', 'Lab': '8247', 'LD': '11584'
+            },
+            {
+                'Constituency': 'Bury St Edmunds', 'MP': 'Jo Churchill', 'Winning party': 'Con', 'Electorate': '89644', 'Valid votes': '61957', 'Majority': '24988', 'Majority (%)': 40.33119744, 'Con': '37770', 'Lab': '12782', 'LD': '0'
+            },
+            {
+                'Constituency': 'Skipton and Ripon', 'MP': 'Julian Smith', 'Winning party': 'Con', 'Electorate': '78347', 'Valid votes': '58724', 'Majority': '23694', 'Majority (%)': 40.34806893, 'Con': '34919', 'Lab': '11225', 'LD': '8701'
+            },
+            {
+                'Constituency': 'Charnwood', 'MP': 'Edward Argar', 'Winning party': 'Con', 'Electorate': '79534', 'Valid votes': '55365', 'Majority': '22397', 'Majority (%)': 40.45335501, 'Con': '35121', 'Lab': '12724', 'LD': '4856'
+            },
+            {
+                'Constituency': 'North Shropshire', 'MP': 'Owen Paterson', 'Winning party': 'Con', 'Electorate': '83258', 'Valid votes': '56513', 'Majority': '22949', 'Majority (%)': 40.6083556, 'Con': '35444', 'Lab': '12495', 'LD': '5643'
+            },
+            {
+                'Constituency': 'Great Yarmouth', 'MP': 'Brandon Lewis', 'Winning party': 'Con', 'Electorate': '71957', 'Valid votes': '43462', 'Majority': '17663', 'Majority (%)': 40.6400994, 'Con': '28593', 'Lab': '10930', 'LD': '1661'
+            },
+            {
+                'Constituency': 'Tiverton and Honiton', 'MP': 'Neil Parish', 'Winning party': 'Con', 'Electorate': '82953', 'Valid votes': '59613', 'Majority': '24239', 'Majority (%)': 40.66059417, 'Con': '35893', 'Lab': '11654', 'LD': '8807'
+            },
+            {
+                'Constituency': 'Hertsmere', 'MP': 'Oliver Dowden', 'Winning party': 'Con', 'Electorate': '73971', 'Valid votes': '52203', 'Majority': '21313', 'Majority (%)': 40.82715553, 'Con': '32651', 'Lab': '11338', 'LD': '6561'
+            },
+            {
+                'Constituency': 'Haltemprice and Howden', 'MP': 'David Davis', 'Winning party': 'Con', 'Electorate': '71083', 'Valid votes': '49779', 'Majority': '20329', 'Majority (%)': 40.8385062, 'Con': '31045', 'Lab': '10716', 'LD': '5215'
+            },
+            {
+                'Constituency': 'Sevenoaks', 'MP': 'Laura Trott', 'Winning party': 'Con', 'Electorate': '71757', 'Valid votes': '50956', 'Majority': '20818', 'Majority (%)': 40.85485517, 'Con': '30932', 'Lab': '6946', 'LD': '10114'
+            },
+            {
+                'Constituency': 'Old Bexley and Sidcup', 'MP': 'James Brokenshire', 'Winning party': 'Con', 'Electorate': '66104', 'Valid votes': '46145', 'Majority': '18952', 'Majority (%)': 41.07053852, 'Con': '29786', 'Lab': '10834', 'LD': '3822'
+            },
+            {
+                'Constituency': 'South Northamptonshire', 'MP': 'Andrea Leadsom', 'Winning party': 'Con', 'Electorate': '90842', 'Valid votes': '66908', 'Majority': '27761', 'Majority (%)': 41.49130149, 'Con': '41755', 'Lab': '13994', 'LD': '7891'
+            },
+            {
+                'Constituency': 'Central Suffolk and North Ipswich', 'MP': 'Dan Poulter', 'Winning party': 'Con', 'Electorate': '80037', 'Valid votes': '56250', 'Majority': '23391', 'Majority (%)': 41.584, 'Con': '35253', 'Lab': '11862', 'LD': '6485'
+            },
+            {
+                'Constituency': 'South Leicestershire', 'MP': 'Alberto Costa', 'Winning party': 'Con', 'Electorate': '80520', 'Valid votes': '57469', 'Majority': '24004', 'Majority (%)': 41.76860568, 'Con': '36791', 'Lab': '12787', 'LD': '5452'
+            },
+            {
+                'Constituency': 'Torridge and West Devon', 'MP': 'Geoffrey Cox', 'Winning party': 'Con', 'Electorate': '80403', 'Valid votes': '59730', 'Majority': '24992', 'Majority (%)': 41.84162063, 'Con': '35904', 'Lab': '10290', 'LD': '10912'
+            },
+            {
+                'Constituency': 'Wealden', 'MP': 'Nusrat Ghani', 'Winning party': 'Con', 'Electorate': '82998', 'Valid votes': '60907', 'Majority': '25655', 'Majority (%)': 42.12159522, 'Con': '37043', 'Lab': '9377', 'LD': '11388'
+            },
+            {
+                'Constituency': 'Maidstone and The Weald', 'MP': 'Helen Grant', 'Winning party': 'Con', 'Electorate': '76109', 'Valid votes': '51680', 'Majority': '21772', 'Majority (%)': 42.12848297, 'Con': '31220', 'Lab': '9448', 'LD': '8482'
+            },
+            {
+                'Constituency': 'Meriden', 'MP': 'Saqib Bhatti', 'Winning party': 'Con', 'Electorate': '85368', 'Valid votes': '54161', 'Majority': '22836', 'Majority (%)': 42.16318015, 'Con': '34358', 'Lab': '11522', 'LD': '5614'
+            },
+            {
+                'Constituency': 'Wyre Forest', 'MP': 'Mark Garnier', 'Winning party': 'Con', 'Electorate': '78077', 'Valid votes': '50561', 'Majority': '21413', 'Majority (%)': 42.35082376, 'Con': '32960', 'Lab': '11547', 'LD': '4081'
+            },
+            {
+                'Constituency': 'Bridgwater and West Somerset', 'MP': 'Ian Liddell-Grainger', 'Winning party': 'Con', 'Electorate': '85327', 'Valid votes': '57652', 'Majority': '24439', 'Majority (%)': 42.3905502, 'Con': '35827', 'Lab': '11388', 'LD': '7805'
+            },
+            {
+                'Constituency': 'Broxbourne', 'MP': 'Charles Walker', 'Winning party': 'Con', 'Electorate': '73182', 'Valid votes': '46706', 'Majority': '19807', 'Majority (%)': 42.40782769, 'Con': '30631', 'Lab': '10824', 'LD': '3970'
+            },
+            {
+                'Constituency': 'Dudley South', 'MP': 'Mike Wood', 'Winning party': 'Con', 'Electorate': '60731', 'Valid votes': '36576', 'Majority': '15565', 'Majority (%)': 42.55522747, 'Con': '24835', 'Lab': '9270', 'LD': '1608'
+            },
+            {
+                'Constituency': 'Bromsgrove', 'MP': 'Sajid Javid', 'Winning party': 'Con', 'Electorate': '75078', 'Valid votes': '54272', 'Majority': '23106', 'Majority (%)': 42.57443986, 'Con': '34408', 'Lab': '11302', 'LD': '6779'
+            },
+            {
+                'Constituency': 'West Worcestershire', 'MP': 'Harriett Baldwin', 'Winning party': 'Con', 'Electorate': '76241', 'Valid votes': '57530', 'Majority': '24499', 'Majority (%)': 42.5847384, 'Con': '34909', 'Lab': '9496', 'LD': '10410'
+            },
+            {
+                'Constituency': 'Tamworth', 'MP': 'Christopher Pincher', 'Winning party': 'Con', 'Electorate': '71572', 'Valid votes': '46056', 'Majority': '19634', 'Majority (%)': 42.63071044, 'Con': '30542', 'Lab': '10908', 'LD': '2426'
+            },
+            {
+                'Constituency': 'North West Norfolk', 'MP': 'James Wild', 'Winning party': 'Con', 'Electorate': '72080', 'Valid votes': '46602', 'Majority': '19922', 'Majority (%)': 42.74923823, 'Con': '30627', 'Lab': '10705', 'LD': '3625'
+            },
+            {
+                'Constituency': 'Chatham and Aylesford', 'MP': 'Tracey Crouch', 'Winning party': 'Con', 'Electorate': '71642', 'Valid votes': '43340', 'Majority': '18540', 'Majority (%)': 42.77803415, 'Con': '28856', 'Lab': '10316', 'LD': '2866'
+            },
+            {
+                'Constituency': 'South Suffolk', 'MP': 'James Cartlidge', 'Winning party': 'Con', 'Electorate': '76201', 'Valid votes': '53489', 'Majority': '22897', 'Majority (%)': 42.80693227, 'Con': '33270', 'Lab': '10373', 'LD': '6702'
+            },
+            {
+                'Constituency': 'Cannock Chase', 'MP': 'Amanda Milling', 'Winning party': 'Con', 'Electorate': '74813', 'Valid votes': '46313', 'Majority': '19879', 'Majority (%)': 42.92315333, 'Con': '31636', 'Lab': '11757', 'LD': '0'
+            },
+            {
+                'Constituency': 'Meon Valley', 'MP': 'Flick Drummond', 'Winning party': 'Con', 'Electorate': '75737', 'Valid votes': '54829', 'Majority': '23555', 'Majority (%)': 42.96084189, 'Con': '35271', 'Lab': '5644', 'LD': '11716'
+            },
+            {
+                'Constituency': 'East Yorkshire', 'MP': 'Greg Knight', 'Winning party': 'Con', 'Electorate': '80923', 'Valid votes': '52769', 'Majority': '22787', 'Majority (%)': 43.18255036, 'Con': '33988', 'Lab': '11201', 'LD': '4219'
+            },
+            {
+                'Constituency': 'Hornchurch and Upminster', 'MP': 'Julia Lopez', 'Winning party': 'Con', 'Electorate': '80765', 'Valid votes': '53974', 'Majority': '23308', 'Majority (%)': 43.18375514, 'Con': '35495', 'Lab': '12187', 'LD': '3862'
+            },
+            {
+                'Constituency': 'North Dorset', 'MP': 'Simon Hoare', 'Winning party': 'Con', 'Electorate': '76765', 'Valid votes': '56107', 'Majority': '24301', 'Majority (%)': 43.31188622, 'Con': '35705', 'Lab': '6737', 'LD': '11404'
+            },
+            {
+                'Constituency': 'Faversham and Mid Kent', 'MP': 'Helen Whately', 'Winning party': 'Con', 'Electorate': '73403', 'Valid votes': '50394', 'Majority': '21976', 'Majority (%)': 43.60836608, 'Con': '31864', 'Lab': '9888', 'LD': '6170'
+            },
+            {
+                'Constituency': 'Saffron Walden', 'MP': 'Kemi Badenoch', 'Winning party': 'Con', 'Electorate': '87017', 'Valid votes': '63086', 'Majority': '27594', 'Majority (%)': 43.74029103, 'Con': '39714', 'Lab': '8305', 'LD': '12120'
+            },
+            {
+                'Constituency': 'Lichfield', 'MP': 'Michael Fabricant', 'Winning party': 'Con', 'Electorate': '76616', 'Valid votes': '53993', 'Majority': '23638', 'Majority (%)': 43.77974923, 'Con': '34844', 'Lab': '11206', 'LD': '5632'
+            },
+            {
+                'Constituency': 'Bognor Regis and Littlehampton', 'MP': 'Nick Gibb', 'Winning party': 'Con', 'Electorate': '77446', 'Valid votes': '51223', 'Majority': '22503', 'Majority (%)': 43.93143705, 'Con': '32521', 'Lab': '10018', 'LD': '5645'
+            },
+            {
+                'Constituency': 'South Basildon and East Thurrock', 'MP': 'Stephen Metcalfe', 'Winning party': 'Con', 'Electorate': '74441', 'Valid votes': '45297', 'Majority': '19922', 'Majority (%)': 43.98083758, 'Con': '29973', 'Lab': '10051', 'LD': '1957'
+            },
+            {
+                'Constituency': 'Bexhill and Battle', 'MP': 'Huw Merriman', 'Winning party': 'Con', 'Electorate': '81963', 'Valid votes': '59093', 'Majority': '26059', 'Majority (%)': 44.09828575, 'Con': '37590', 'Lab': '11531', 'LD': '7280'
+            },
+            {
+                'Constituency': 'Epping Forest', 'MP': 'Eleanor Laing', 'Winning party': 'Con', 'Electorate': '74304', 'Valid votes': '50268', 'Majority': '22173', 'Majority (%)': 44.10957269, 'Con': '32364', 'Lab': '10191', 'LD': '5387'
+            },
+            {
+                'Constituency': 'Thirsk and Malton', 'MP': 'Kevin Hollinrake', 'Winning party': 'Con', 'Electorate': '80991', 'Valid votes': '56588', 'Majority': '25154', 'Majority (%)': 44.45112038, 'Con': '35634', 'Lab': '10480', 'LD': '6774'
+            },
+            {
+                'Constituency': 'North West Hampshire', 'MP': 'Kit Malthouse', 'Winning party': 'Con', 'Electorate': '83083', 'Valid votes': '58918', 'Majority': '26308', 'Majority (%)': 44.65188907, 'Con': '36591', 'Lab': '9327', 'LD': '10283'
+            },
+            {
+                'Constituency': 'Gainsborough', 'MP': 'Edward Leigh', 'Winning party': 'Con', 'Electorate': '76343', 'Valid votes': '51046', 'Majority': '22967', 'Majority (%)': 44.99275164, 'Con': '33893', 'Lab': '10926', 'LD': '5157'
+            },
+            {
+                'Constituency': 'West Suffolk', 'MP': 'Matthew Hancock', 'Winning party': 'Con', 'Electorate': '80193', 'Valid votes': '51437', 'Majority': '23194', 'Majority (%)': 45.09205436, 'Con': '33842', 'Lab': '10648', 'LD': '4685'
+            },
+            {
+                'Constituency': 'Daventry', 'MP': 'Chris Heaton-Harris', 'Winning party': 'Con', 'Electorate': '77423', 'Valid votes': '57403', 'Majority': '26080', 'Majority (%)': 45.43316551, 'Con': '37055', 'Lab': '10975', 'LD': '7032'
+            },
+            {
+                'Constituency': 'Fareham', 'MP': 'Suella Braverman', 'Winning party': 'Con', 'Electorate': '78337', 'Valid votes': '57250', 'Majority': '26086', 'Majority (%)': 45.5650655, 'Con': '36459', 'Lab': '10373', 'LD': '8006'
+            },
+            {
+                'Constituency': 'Orpington', 'MP': 'Gareth Bacon', 'Winning party': 'Con', 'Electorate': '68877', 'Valid votes': '48721', 'Majority': '22378', 'Majority (%)': 45.93091275, 'Con': '30882', 'Lab': '8504', 'LD': '7552'
+            },
+            {
+                'Constituency': 'Rutland and Melton', 'MP': 'Alicia Kearns', 'Winning party': 'Con', 'Electorate': '82705', 'Valid votes': '58310', 'Majority': '26924', 'Majority (%)': 46.17389813, 'Con': '36507', 'Lab': '9583', 'LD': '7970'
+            },
+            {
+                'Constituency': 'Cleethorpes', 'MP': 'Martin Vickers', 'Winning party': 'Con', 'Electorate': '73689', 'Valid votes': '46339', 'Majority': '21418', 'Majority (%)': 46.22024644, 'Con': '31969', 'Lab': '10551', 'LD': '2535'
+            },
+            {
+                'Constituency': 'Basildon and Billericay', 'MP': 'John Baron', 'Winning party': 'Con', 'Electorate': '69906', 'Valid votes': '44128', 'Majority': '20412', 'Majority (%)': 46.25634518, 'Con': '29590', 'Lab': '9178', 'LD': '3741'
+            },
+            {
+                'Constituency': 'Grantham and Stamford', 'MP': 'Gareth Davies', 'Winning party': 'Con', 'Electorate': '81502', 'Valid votes': '56003', 'Majority': '26003', 'Majority (%)': 46.43144117, 'Con': '36794', 'Lab': '10791', 'LD': '6153'
+            },
+            {
+                'Constituency': 'Bosworth', 'MP': 'Luke Evans', 'Winning party': 'Con', 'Electorate': '81542', 'Valid votes': '56432', 'Majority': '26278', 'Majority (%)': 46.56577828, 'Con': '36056', 'Lab': '9778', 'LD': '9096'
+            },
+            {
+                'Constituency': 'Ludlow', 'MP': 'Philip Dunne', 'Winning party': 'Con', 'Electorate': '69444', 'Valid votes': '50225', 'Majority': '23648', 'Majority (%)': 47.08412145, 'Con': '32185', 'Lab': '7591', 'LD': '8537'
+            },
+            {
+                'Constituency': 'Devizes', 'MP': 'Danny Kruger', 'Winning party': 'Con', 'Electorate': '73372', 'Valid votes': '50954', 'Majority': '23993', 'Majority (%)': 47.08756918, 'Con': '32150', 'Lab': '7838', 'LD': '8157'
+            },
+            {
+                'Constituency': 'Richmond (Yorks)', 'MP': 'Rishi Sunak', 'Winning party': 'Con', 'Electorate': '82569', 'Valid votes': '57703', 'Majority': '27210', 'Majority (%)': 47.15526056, 'Con': '36693', 'Lab': '9483', 'LD': '6989'
+            },
+            {
+                'Constituency': 'Tonbridge and Malling', 'MP': 'Thomas Tugendhat', 'Winning party': 'Con', 'Electorate': '79278', 'Valid votes': '57003', 'Majority': '26941', 'Majority (%)': 47.26242478, 'Con': '35784', 'Lab': '8286', 'LD': '8843'
+            },
+            {
+                'Constituency': 'Christchurch', 'MP': 'Christopher Chope', 'Winning party': 'Con', 'Electorate': '71520', 'Valid votes': '51951', 'Majority': '24617', 'Majority (%)': 47.3850359, 'Con': '33894', 'Lab': '6568', 'LD': '9277'
+            },
+            {
+                'Constituency': 'Havant', 'MP': 'Alan Mak', 'Winning party': 'Con', 'Electorate': '72103', 'Valid votes': '45959', 'Majority': '21792', 'Majority (%)': 47.41617529, 'Con': '30051', 'Lab': '8259', 'LD': '5708'
+            },
+            {
+                'Constituency': 'Sittingbourne and Sheppey', 'MP': 'Gordon Henderson', 'Winning party': 'Con', 'Electorate': '83917', 'Valid votes': '51394', 'Majority': '24479', 'Majority (%)': 47.63007355, 'Con': '34742', 'Lab': '10263', 'LD': '3213'
+            },
+            {
+                'Constituency': 'Gosport', 'MP': 'Caroline Dinenage', 'Winning party': 'Con', 'Electorate': '73541', 'Valid votes': '48453', 'Majority': '23278', 'Majority (%)': 48.04243287, 'Con': '32226', 'Lab': '8948', 'LD': '5473'
+            },
+            {
+                'Constituency': 'New Forest West', 'MP': 'Desmond Swayne', 'Winning party': 'Con', 'Electorate': '70869', 'Valid votes': '50306', 'Majority': '24403', 'Majority (%)': 48.50912416, 'Con': '32113', 'Lab': '6595', 'LD': '7710'
+            },
+            {
+                'Constituency': 'North Herefordshire', 'MP': 'Bill Wiggin', 'Winning party': 'Con', 'Electorate': '70252', 'Valid votes': '51033', 'Majority': '24856', 'Majority (%)': 48.70573942, 'Con': '32158', 'Lab': '6804', 'LD': '7302'
+            },
+            {
+                'Constituency': 'Witham', 'MP': 'Priti Patel', 'Winning party': 'Con', 'Electorate': '70402', 'Valid votes': '49344', 'Majority': '24082', 'Majority (%)': 48.80431258, 'Con': '32876', 'Lab': '8794', 'LD': '4584'
+            },
+            {
+                'Constituency': 'Braintree', 'MP': 'James Cleverly', 'Winning party': 'Con', 'Electorate': '75208', 'Valid votes': '50499', 'Majority': '24673', 'Majority (%)': 48.85839324, 'Con': '34112', 'Lab': '9439', 'LD': '4779'
+            },
+            {
+                'Constituency': 'Sleaford and North Hykeham', 'MP': 'Caroline Johnson', 'Winning party': 'Con', 'Electorate': '94761', 'Valid votes': '66554', 'Majority': '32565', 'Majority (%)': 48.93019202, 'Con': '44683', 'Lab': '12118', 'LD': '5355'
+            },
+            {
+                'Constituency': 'New Forest East', 'MP': 'Julian Lewis', 'Winning party': 'Con', 'Electorate': '73549', 'Valid votes': '50786', 'Majority': '25251', 'Majority (%)': 49.72039538, 'Con': '32769', 'Lab': '7518', 'LD': '7390'
+            },
+            {
+                'Constituency': 'Mid Worcestershire', 'MP': 'Nigel Huddleston', 'Winning party': 'Con', 'Electorate': '78220', 'Valid votes': '56123', 'Majority': '28018', 'Majority (%)': 49.92249167, 'Con': '37426', 'Lab': '9408', 'LD': '6474'
+            },
+            {
+                'Constituency': 'Aldridge-Brownhills', 'MP': 'Wendy Morton', 'Winning party': 'Con', 'Electorate': '60138', 'Valid votes': '39342', 'Majority': '19836', 'Majority (%)': 50.41939912, 'Con': '27850', 'Lab': '8014', 'LD': '2371'
+            },
+            {
+                'Constituency': 'Brigg and Goole', 'MP': 'Andrew Percy', 'Winning party': 'Con', 'Electorate': '65939', 'Valid votes': '43402', 'Majority': '21941', 'Majority (%)': 50.55296991, 'Con': '30941', 'Lab': '9000', 'LD': '2180'
+            },
+            {
+                'Constituency': 'South West Norfolk', 'MP': 'Elizabeth Truss', 'Winning party': 'Con', 'Electorate': '78455', 'Valid votes': '51466', 'Majority': '26195', 'Majority (%)': 50.89768002, 'Con': '35507', 'Lab': '9312', 'LD': '4166'
+            },
+            {
+                'Constituency': 'Brentwood and Ongar', 'MP': 'Alex Burghart', 'Winning party': 'Con', 'Electorate': '75255', 'Valid votes': '52949', 'Majority': '29065', 'Majority (%)': 54.89244367, 'Con': '36308', 'Lab': '7243', 'LD': '7187'
+            },
+            {
+                'Constituency': 'Louth and Horncastle', 'MP': 'Victoria Atkins', 'Winning party': 'Con', 'Electorate': '79634', 'Valid votes': '52332', 'Majority': '28868', 'Majority (%)': 55.16318887, 'Con': '38021', 'Lab': '9153', 'LD': '4114'
+            },
+            {
+                'Constituency': 'Rayleigh and Wickford', 'MP': 'Mark Francois', 'Winning party': 'Con', 'Electorate': '78930', 'Valid votes': '54901', 'Majority': '31000', 'Majority (%)': 56.46527386, 'Con': '39864', 'Lab': '8864', 'LD': '4171'
+            },
+            {
+                'Constituency': 'South Staffordshire', 'MP': 'Gavin Williamson', 'Winning party': 'Con', 'Electorate': '73668', 'Valid votes': '50005', 'Majority': '28250', 'Majority (%)': 56.49435056, 'Con': '36520', 'Lab': '8270', 'LD': '3280'
+            },
+            {
+                'Constituency': 'North East Cambridgeshire', 'MP': 'Stephen Barclay', 'Winning party': 'Con', 'Electorate': '83699', 'Valid votes': '52964', 'Majority': '29993', 'Majority (%)': 56.62903104, 'Con': '38423', 'Lab': '8430', 'LD': '4298'
+            },
+            {
+                'Constituency': 'Clacton', 'MP': 'Giles Watling', 'Winning party': 'Con', 'Electorate': '70930', 'Valid votes': '43506', 'Majority': '24702', 'Majority (%)': 56.7783754, 'Con': '31438', 'Lab': '6736', 'LD': '2541'
+            },
+            {
+                'Constituency': 'Maldon', 'MP': 'John Whittingdale', 'Winning party': 'Con', 'Electorate': '72438', 'Valid votes': '50408', 'Majority': '30041', 'Majority (%)': 59.5956991, 'Con': '36304', 'Lab': '6263', 'LD': '5990'
+            },
+            {
+                'Constituency': 'Castle Point', 'MP': 'Rebecca Harris', 'Winning party': 'Con', 'Electorate': '69608', 'Valid votes': '44277', 'Majority': '26634', 'Majority (%)': 60.15312691, 'Con': '33971', 'Lab': '7337', 'LD': '2969'
+            },
+            {
+                'Constituency': 'Boston and Skegness', 'MP': 'Matt Warman', 'Winning party': 'Con', 'Electorate': '69381', 'Valid votes': '41696', 'Majority': '25621', 'Majority (%)': 61.44714121, 'Con': '31963', 'Lab': '6342', 'LD': '1963'
+            },
+            {
+                'Constituency': 'South Holland and The Deepings', 'MP': 'John Hayes', 'Winning party': 'Con', 'Electorate': '75975', 'Valid votes': '49179', 'Majority': '30838', 'Majority (%)': 62.70562639, 'Con': '37338', 'Lab': '6500', 'LD': '3225'
+            }
+        ];
+
+        const MAX_HEIGHT = 1000;
+        var positions = [];
+
+        function get_coords(item) {
+            var col_no = 0;
+            var item_height = MAX_HEIGHT * item["Majority (%)"] / 10;
+            var skipped = false;
+
+            while (true) {
+
+                var found_space = true;
+
+                for (var i = 0; i < positions.length; i++) {
+                    if (positions[i].col != col_no) continue;
+
+                    if (positions[i].top < item_height && positions[i].top + 120 > item_height) {
+                        found_space = false;
+                        break;
+                    }
+                    else if (positions[i].top == item_height) {
+                        found_space = false;
+                        break;
+                    }
+                }
+
+                if (found_space) {
+                    positions.push({
+                        col: col_no,
+                        top: item_height
+                    });
+                    return (col_no * 230) + 10;
+                }
+
+                col_no++;
+            }
+        }
+
+        function create_tory(item) {
+
+            return `<div class='tory' style="top: ` + ((MAX_HEIGHT * item["Majority (%)"] / 10) + 100).toString() + `px; left: ` + get_coords(item) + `px">
+    <h2>` + item.MP + `</h2>
+    <h4>` + item.Constituency + `</h4>
+    <p>Majority ` + item.Majority + ` (` + item["Majority (%)"].toFixed(1) + `%)</p>
+    </div>`;
+        }
+
+        function create_scale() {
+            var html = "Majority (%)";
+            for (var i = 0; i <= 70; i += 10) {
+                html += `<p class="scale-entry" style="left: 10px; top: ` + ((MAX_HEIGHT * i / 10) + 100).toString() + `px">` + i.toString() + `%</p>`;
+            }
+            return "<div class='scale'>" + html + "</div>";
+        }
+
+        var html = create_scale();
+        var tories = "";
+        for (var i = 0; i < data.length; i++) {
+            tories += create_tory(data[i]);
+        }
+
+        html += `<div class="tories">` + tories + `</div>`;
+
+        document.getElementById("root").innerHTML = html;
+
+
+        Array.prototype.forEach.call(document.getElementsByClassName("tory"), (element) => {
+            element.addEventListener("click", (e) => {
+                element.classList.toggle("labourised")
+            });
+        });
+
+    </script>
+</body>
+
+</html>
